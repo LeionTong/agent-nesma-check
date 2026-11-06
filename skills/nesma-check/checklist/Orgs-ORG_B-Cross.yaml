@@ -1,0 +1,113 @@
+version: "3.0.0"
+group: Orgs-ORG_B-Cross
+org_id: ORG_B
+
+rules:
+  - id: Orgs-ORG_B-Cross-071
+    item_name: NESMA拆分表与需求说明书层级对应检查(工程类)
+    layer: programmatic
+    document_types: [srs, function_breakdown]
+    description: |
+      NESMA拆分表的【一级模块】列必须和需求说明书的【4.业务功能需求】下的【X.X.X目录】对应，
+      【二级模块】列必须和需求说明书的【4.业务功能需求】下的【X.X.X.X目录】对应，
+      【功能点计数项名称】列必须和需求说明书的【4.业务功能需求】下的【X.X.X.X.X.X目录】对应，
+      NESMA功能清单拆分表的【修改类型】列(新增/修改/删除)，必须和需求说明书的功能类别(新增/完善/下线)对应
+    pass_criteria: |
+      验证通过：NESMA拆分表各层级(一级模块/二级模块/功能点计数项名称/修改类型)与需求说明书对应目录层级一一对应
+    fail_criteria: |
+      验证不通过：NESMA拆分表与需求说明书的层级对应关系存在不匹配
+    severity: error
+    scope: [engineering]
+    references:
+      - cq-review-rules.md id43
+    example: ""
+    type_modify: 如果需求说明和拆分表的功能类别不一致，则二者取其低功能类别进行功能点计数
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果在需求说明书中未找到相关的功能点计数项名称，则该功能行的功能点记为0。
+  - id: Orgs-ORG_B-Cross-072
+    item_name: NESMA拆分表与需求说明书层级对应检查(新需求类)
+    layer: programmatic
+    document_types: [srs, function_breakdown]
+    description: |
+      NESMA拆分表的【新需求名称】列，必须和需求说明书的【X一级目录】对应，
+      【一级模块】列，必须和需求说明书的【X.X.X.X目录】对应，
+      【二级模块】列，必须和需求说明书的【X.X.X.X.X目录】对应，
+      【功能点计数项名称】列，必须和需求说明书的【X.X.X.X.X.X目录】对应，
+      【修改类型】列(新增/修改/删除)，必须和需求说明书的功能类别(新增/完善/下线)对应，
+    pass_criteria: |
+      验证通过：NESMA拆分表各层级(新需求名称/一级模块/二级模块/功能点计数项名称/修改类型)与需求说明书对应目录层级一一对应
+    fail_criteria: |
+      验证不通过：NESMA拆分表与需求说明书的层级对应关系存在不匹配
+    severity: error
+    scope: [new_demand]
+    references:
+      - cq-review-rules.md id43
+    example: ""
+    type_modify: 如果需求说明和拆分表的功能类别不一致，则二者取其低功能类别进行功能点计数。
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果在需求说明书中未找到相关的功能点计数项名称，则该功能行的功能点记为0。
+  - id: Orgs-ORG_B-Cross-073
+    item_name: NESMA拆分表与测试报告层级对应检查(工程类)
+    layer: programmatic
+    document_types: [function_breakdown, test_report]
+    description: |
+      NESMA拆分表的【一级模块】，必须和测试报告中的【第2章】模块下的【X.X.X】对应，
+      【二级模块】，必须和测试报告中的【第2章】模块下的【X.X.X.X】对应，
+      【功能点计数项名称】列，必须能在测试报告中找到
+    pass_criteria: |
+      验证通过：NESMA拆分表各层级(一级模块/二级模块/功能点计数项名称)与测试报告对应章节层级一一对应
+    fail_criteria: |
+      验证不通过：NESMA拆分表与测试报告的层级对应关系存在不匹配
+    severity: error
+    scope: [engineering]
+    references:
+      - cq-review-rules.md id43
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果在测试报告中未找到相关的功能点计数项名称，则该功能行的功能点记为0
+  - id: Orgs-ORG_B-Cross-074
+    item_name: NESMA拆分表与测试报告层级对应检查(新需求类)
+    layer: programmatic
+    document_types: [function_breakdown, test_report]
+    description: |
+      NESMA功能清单的【新需求名称】，必须和测试报告中的【一级目录】对应，
+      【功能点计数项名称】，必须和测试报告中的【二级目录】对应
+    pass_criteria: |
+      验证通过：NESMA功能清单的新需求名称/功能点计数项名称与测试报告对应目录层级一一对应
+    fail_criteria: |
+      验证不通过：NESMA功能清单与测试报告的层级对应关系存在不匹配
+    severity: error
+    scope: [new_demand]
+    references:
+      - cq-review-rules.md id43
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果在测试报告中未找到相关的功能点计数项名称，则该功能行的功能点记为0
+  - id: Orgs-ORG_B-Cross-075
+    item_name: NESMA拆分表与技术规范书层级对应检查
+    layer: programmatic
+    document_types: [function_breakdown, technical_specification]
+    description: |
+      NESMA拆分表的【子系统】和技术规范书的【系统】列对应，
+      NESMA拆分表的【一级模块】和技术规范书的【分类】对应，
+      NESMA拆分表的【二级模块】和技术规范书的【一级目录】对应，
+      NESMA拆分表的【三级模块】和技术规范书的【二级目录】对应
+    pass_criteria: |
+      验证通过：NESMA拆分表各层级(子系统/一级模块/二级模块/三级模块)与技术规范书(合同)各层级一一对应
+    fail_criteria: |
+      验证不通过：NESMA拆分表与技术规范书的层级对应关系存在不匹配
+    severity: error
+    scope: [engineering]
+    references:
+      - cq-review-rules.md id43
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果在技术规范书中未找到对应的模块，则该功能行的功能点记为0

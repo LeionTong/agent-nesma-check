@@ -1,0 +1,226 @@
+version: "3.0.0"
+group: Orgs-ORG_B-Transaction
+org_id: ORG_B
+
+rules:
+  - id: Orgs-ORG_B-Transaction-083
+    item_name: 通用组件功能重用程度检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      根据功能项描述和功能点计数项名称的内容，判断该功能是不是“通用组件功能”，若是则【重用程度】应为高。
+    pass_criteria: |
+      验证通过：功能为“通用组件功能”(如基于导出/导入/上传/下载组件实现)时，【重用程度】已正确设置为“高”
+    fail_criteria: |
+      验证不通过：“通用组件功能”的【重用程度】未设置为“高”
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id62
+    example: |
+      例如：依赖于导出组件、导入组件、上传组件、下载组件等通用组件实现的用户信息导出、资源信息导入、个人资料上传、审计报告下载等功能计取【重用程度】为高；
+    type_modify: ""
+    reusability_modify: 符合“通用组件功能”的功能点的【重用程度】设置为“高”
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Transaction-084
+    item_name: 同模型不同目的功能重用程度检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      依赖于同一模型，功能目的不同的功能，那么一组功能计取重用程度为低，其余功能计取重用程度为高；
+    pass_criteria: |
+      验证通过：依赖于同一模型但功能目的不同的一组功能中，仅一个功能的重用程度为“低”，其余为“高”
+    fail_criteria: |
+      验证不通过：同模型不同目的的功能中，多个功能的重用程度均为“低”，或未按规则设置
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id62
+    example: |
+      例如：XX新增、XX修改、XX删除、XX启用、XX激活，那么XX新增计取重用程度为低，其余功能计取重用程度为高；
+    type_modify: ""
+    reusability_modify: 依赖于同一模型，功能目的不同的功能，那么一组功能计取重用程度为低，其余功能计取重用程度为高；
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Transaction-085
+    item_name: 高度类似功能重用程度检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      功能高度类似，但有细微差别的功能，那么一组计取重用程度为低，其余2个功能计取重用程度为高；
+    pass_criteria: |
+      验证通过：功能高度类似但有细微差别的一组功能中，仅一个功能的重用程度为“低”，其余为“高”
+    fail_criteria: |
+      验证不通过：高度类似功能的重用程度设置不符合规则(多个为“低”或全部为“高”)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id62
+    example: |
+      例如：资料管理员审核/部门经理审核(两者功能有差别)、开卡数据日报/开卡数据月报，那么资源管理员审核、开卡数据日报计取重用程度为低，其余2个功能计取重用程度为高；
+    type_modify: ""
+    reusability_modify: 功能高度类似，但有细微差别的功能，那么一组计取重用程度为低，其余2个功能计取重用程度为高；
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Transaction-086
+    item_name: 外键关联查询功能重用程度检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      同一页面存在外键关联的查询功能，那么一组计取重用程度为低、其他计取重用程度为高。
+    pass_criteria: |
+      验证通过：同一页面存在外键关联的查询功能中，仅一个功能的重用程度为“低”，其余为“高”
+    fail_criteria: |
+      验证不通过：外键关联查询功能的重用程度设置不符合规则
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id62
+    example: |
+      例如：用户信息查询、用户详情查询，那么用户信息查询计取重用程度为低、用户详情查询计
+      取重用程度为高。
+    type_modify: ""
+    reusability_modify: 同一页面存在外键关联的查询功能，那么一组计取重用程度为低、其他计取重用程度为高。
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Transaction-099
+    item_name: EI功能点计数项名称关键字检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是EI时，功能点计数项名称应体现如下要求：
+      常见关键字：新增、修改、删除、审核、审批、批阅、启动、停止、暂停、挂起、继续、调大小、注册、修改个人信息、修改密码、导入、批量删除、批量修改、数据清除，以及通过接口完成以上操作的功能
+    pass_criteria: |
+      验证通过：类别为EI时，功能点计数项名称包含符合EI定义的关键字(如新增/修改/删除/审核/审批/导入/批量操作/数据清除等)
+    fail_criteria: |
+      验证不通过：类别为EI时，功能点计数项名称不符合EI关键字要求
+    severity: warning
+    scope: [engineering, new_demand]
+    references:
+      - ceprei-review-rules.md id21
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果违背该功能，结合功能点计数项名称和功能项描述判定，如果确认是非功能，则计算功能点时取值为0
+  - id: Orgs-ORG_B-Transaction-100
+    item_name: EO功能点计数项名称关键字检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是EO时，功能点计数项名称应体现如下要求：
+      常见关键字：统计、报告、报表、分析、导生成*文件、报文、邮件、短信、指令，以及通过接口完成以上操作的功能
+    pass_criteria: |
+      验证通过：类别为EO时，功能点计数项名称包含符合EO定义的关键字(如统计/报告/报表/分析/生成文件/报文/邮件/短信/指令等)
+    fail_criteria: |
+      验证不通过：类别为EO时，功能点计数项名称不符合EO关键字要求
+    severity: warning
+    scope: [engineering, new_demand]
+    references:
+      - ceprei-review-rules.md id21
+    example: ""
+    type_modify: 如果违背该检查项，那么该功能可能不是EO，结合功能点计数项名称和功能项描述，判定正确的类别，在计算功能点时，按自主判别的类别计数。
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Transaction-101
+    item_name: EQ功能点计数项名称关键字检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是EQ时，功能点计数项名称应体现如下要求：
+      常见关键字：xx查询、xx详情、xx查看
+    pass_criteria: |
+      验证通过：类别为EQ时，功能点计数项名称包含符合EQ定义的关键字(如XX查询/XX详情/XX查看等)
+    fail_criteria: |
+      验证不通过：类别为EQ时，功能点计数项名称不符合EQ关键字要求
+    severity: warning
+    scope: [engineering, new_demand]
+    references:
+      - ceprei-review-rules.md id21
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果违背该功能，结合功能点计数项名称和功能项描述判定，如果确认是非功能，则计算功能点时取值为0
+  - id: Orgs-ORG_B-Transaction-104
+    item_name: EI功能项描述完整性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      EI的功能项描述列需体现3个要点：一是应用程序边界之外的用户是谁，二是传入的对象是什么，三是最终数据的状态；
+    pass_criteria: |
+      验证通过：类别为EI时，功能项描述体现三个要点——应用边界外的用户是谁 + 传入的对象是什么 + 最终数据的状态
+    fail_criteria: |
+      验证不通过：类别为EI时，功能项描述未完整体现用户、传入对象、数据状态三个要点
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id53
+    example: |
+      功能项描述示例：管理员录入用户信息进行新增、接收外部资源管理系统的资源数据更新本系统的资源信息、定时采集外部系统设备信息更新本系统设备数据；功能点计数项名称可简略描述，例如：用户信息新增、资源信息更新、设备数据采集
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Transaction-105
+    item_name: EQ功能项描述完整性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      EQ功能的主要目的是从应用程序边界内向边界之外呈现或输出一组数据，功能项描述列需体现3个要点：一是谁触发功能执行的，二是输出的对象是什么，三是以什么样的形式输出；
+    pass_criteria: |
+      验证通过：类别为EQ时，功能项描述体现三个要点——谁触发功能执行 + 输出的对象是什么 + 以什么形式输出
+    fail_criteria: |
+      验证不通过：类别为EQ时，功能项描述未完整体现触发者、输出对象、输出形式三个要点
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id54
+    example: |
+      描述示例：管理员点击同步按钮，将用户信息同步到外部人力资源系统、每天定时将审计日志发送到外部审计系统、操作员查询高考成绩在前端界面呈现；功能点计数项名称可简略描述，例如：用户信息同步、审计日志推送、高考成绩查询
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Transaction-106
+    item_name: EO功能项描述完整性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      EO功能在EQ功能的基础上增加了必须包含进一步的数据处理、产生衍生数据或者维护了逻辑文件中的至少一个，可参照EQ的内容增加相应的内容描述即可
+    pass_criteria: |
+      验证通过：类别为EO时，功能项描述在EQ三个要点基础上增加了进一步数据处理/衍生数据/逻辑文件维护中的至少一项描述
+    fail_criteria: |
+      验证不通过：类别为EO时，功能项描述缺少进一步数据处理/衍生数据/逻辑文件维护的必要描述
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id55
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Transaction-107
+    item_name: 多端功能重用程度计取规则检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      多端系统(IOS、安卓、PC端)中的同一功能，只有一端的计取重用程度为低，其他端
+      计取重用程度为高；
+    pass_criteria: |
+      验证通过：同一功能在多端系统中，仅有一端的重用程度为“低”，其余端的重用程度均为“高”
+    fail_criteria: |
+      验证不通过：同一功能在多端系统中，存在多端的重用程度为“低”或重用程度为空值
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id62
+    example: |
+      例如：在IOS、安卓、PC端都开发了用户新增功能，那么PC端的计取重用程度为低，IOS、安卓端计取重用程度为高；
+    type_modify: ""
+    reusability_modify: 多端系统(IOS、安卓、PC端)中的同一功能，只有一端的计取重用程度为低，其他端计取重用程度为高；
+    change_modify: ""
+    function_point_count: ""

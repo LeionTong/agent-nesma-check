@@ -1,0 +1,151 @@
+version: "3.0.0"
+group: Orgs-ORG_B-Data
+org_id: ORG_B
+
+rules:
+  - id: Orgs-ORG_B-Data-098
+    item_name: ILF/ELF功能点计数项名称名词性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是ILF/ELF时，功能点计数项名称必须是名词，一般应体现如下要求：
+      1、常见逻辑文件关键字：业务数据类(用户、信息、产品、栏目、公告、公文、任务、项目、实验室、客户群、分组等)；引用数据类(规则、权限、标签、流程文件等，用户可管理维护)；
+      2、常见非逻辑文件关键字：动作类(新增、删除、修改、列表、视图、报表、统计、排序等，文件应为名词)；临时文件(导出文件、导入文件、排序文件、输出报表、统计文件、输出excel、文件系统文件、U盘文件、光盘文件、上传的文件等)；属性名(*名称、*型号、长度、生日、地址、数量、颜色、高度、容量等)；
+      3、常见存疑关键字：子表(明细、详单)、关系表(对应表、关系表)、子类型(某*类产品、某型号类型、多次出现类似重复后缀)
+    pass_criteria: |
+      验证通过：类别为ILF/ELF时，功能点计数项名称为名词或名词短语(如用户信息、产品档案、权限规则等)，非动作类关键字，非属性名
+    fail_criteria: |
+      验证不通过：ILF/ELF的功能点计数项名称使用了动作类关键字(新增/删除/修改等)或属性名(名称/型号/长度等)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - ceprei-review-rules.md id11
+    example: ""
+    type_modify: 如果违背该检查项，那么该功能可能不是逻辑文件，结合功能点计数项名称和功能项描述，判定正确的类别，在计算功能点时，按自主判别的类别计数。
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Data-102
+    item_name: ILF功能项描述完整性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是ILF时，
+      1、功能项描述应体现2个要点，一是本系统内部维护，二是对象是什么。功能点计数项名称可简略描述
+    pass_criteria: |
+      验证通过：类别为ILF时，功能项描述体现两个要点——本系统内部维护 + 维护对象是什么
+    fail_criteria: |
+      验证不通过：类别为ILF时，功能项描述未体现本系统内部维护关系或未说明维护对象
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id56
+    example: |
+      示例：本系统内部维护的用户信息。功能点计数项名称可简略描述，例如：用户信息
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Data-103
+    item_name: ELF(EIF)功能项描述完整性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是ELF时，功能项描述应体现2个要点，一是外部系统维护，本系统引用，二是对象是什么；
+    pass_criteria: |
+      验证通过：类别为ELF时，功能项描述体现两个要点——外部系统维护本系统引用 + 引用对象是什么
+    fail_criteria: |
+      验证不通过：类别为ELF时，功能项描述未体现外部维护本系统引用关系或未说明对象
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id57
+    example: |
+      描述示例：外部4A系统维护本系统引用的账号信息；功能点计数项名称可简略描述，例如：账号信息
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Data-108
+    item_name: 从属实体不独立分拆逻辑文件检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      从属关系的数据实体不应该分拆识别逻辑文件；从属的子表、无业务字段的关系表、数据实体的从属属性信息，不能独立计数为逻辑文件；示例：发票明细(从属于发票信息)，表A的主键和表B的主键组成的关系表C、设备信息的属性字段、均不能独立计数为逻辑文件
+    pass_criteria: |
+      验证通过：所有从属关系的数据实体(如明细表、无业务字段的关系表、从属属性信息)均未独立计数为逻辑文件
+    fail_criteria: |
+      验证不通过：存在从属关系的数据实体被错误独立计数为逻辑文件
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - ceprei-review-rules.md id10
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Orgs-ORG_B-Data-109
+    item_name: 多端同逻辑文件合并识别检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      多端系统操作同一逻辑文件仅合并识别为1个逻辑文件
+    pass_criteria: |
+      验证通过：多端系统操作同一逻辑文件时，仅合并识别为1个逻辑文件
+    fail_criteria: |
+      验证不通过：多端系统操作同一逻辑文件时，被错误分拆识别为多个逻辑文件
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id37
+    example: |
+      例如IOS、安卓、PC端操作同一逻辑文件仅合并识别为1个逻辑文件；
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Orgs-ORG_B-Data-110
+    item_name: 可维护日志编码文件合并识别检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      在系统内部具备维护功能的日志文件仅合并识别为1个逻辑文件
+      编码数据在系统内部具备维护功能时仅合并识别为1个逻辑文件
+    pass_criteria: |
+      验证通过：系统内部具备维护功能的日志文件仅合并识别为1个逻辑文件；具备维护功能的编码数据仅合并识别为1个逻辑文件
+    fail_criteria: |
+      验证不通过：具备维护功能的日志文件或编码数据被分拆识别为多个逻辑文件
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id37
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Orgs-ORG_B-Data-111
+    item_name: 逻辑文件逻辑差异性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      逻辑文件必须具有逻辑差异性，否则不识别为不同的逻辑文件：
+      1、何为逻辑差异：用户可以感知其用途的明显不同；
+      2、无差异的子类型、不能判定为独立的逻辑文件；
+      3、不同的记录值，不能判定为独立的逻辑文件；同一张表 / 同一套数据，只是行数据不一样，不算新逻辑文件。
+    pass_criteria: |
+      验证通过：每个被识别的逻辑文件均具有用户可感知的逻辑差异(用途明显不同)，无差异的子类型已合并，不同记录值未分拆为独立逻辑文件
+    fail_criteria: |
+      验证不通过：存在不具有逻辑差异的逻辑文件被分拆识别(如无差异的子类型、仅记录值不同的同类数据被计为多个逻辑文件)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - ceprei-review-rules.md id9
+    example: |
+      例如：业务都是「客户基础信息」，技术库拆成：客户主表、客户地址表、客户联系方式表。判断：对业务用户而言，都是客户档案，用途完全一致，无逻辑差异 → 合并为1 个 ILF；
+      例如场景 1：产品档案，分「电子产品、日用品」两个子类型。业务上：新增、查询、修改、统计的规则完全一致，用户眼里都是商品档案。判断：只是分类标签不同，无逻辑差异 → 整体算 1 个 ILF，不能按品类拆多个文件。；
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0

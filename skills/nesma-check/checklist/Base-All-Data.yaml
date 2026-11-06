@@ -1,0 +1,233 @@
+version: "3.0.0"
+group: Base-All-Data
+
+
+rules:
+  - id: Base-All-Data-001
+    item_name: ILF成立必要条件检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      对于每个内部逻辑文件,除了一个外部输出或一个外部查询之外,还存在至少一个外部输入。
+    pass_criteria: |
+      验证通过：每个内部逻辑文件(ILF)均至少存在一个外部输入(EI)，且同时存在至少一个外部输出(EO)或外部查询(EQ)
+    fail_criteria: |
+      验证不通过：存在内部逻辑文件(ILF)无对应的外部输入(EI)，或既无外部输出(EO)也无外部查询(EQ)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §7.2.2
+      - GB-T42588-2023.md §7.2.4
+      - GB-T42588-2023.md §7.2.5
+      - GB-T42588-2023.md §9.2.6
+    example: |
+      系统A：可以增删改查“产品信息”，推测出产品信息是ILF。
+      系统B：只能查询“产品信息”，不能修改，推测出产品信息不是ILF(是ELF)。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Data-002
+    item_name: ELF(EIF)成立必要条件检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      一个外部逻辑文件至少存在一个外部输出和/或一个外部查询。但是,外部逻辑文件偶尔也会被用来只对外部输入的数据元素类型进行编辑、审核或者确认。EIF 仅为 EI 的字段审核 / 校验存在，无 EQ、无 EO，仍合规认定是 EIF、计入 FTR
+    pass_criteria: |
+      验证通过：每个外部逻辑文件(EIF)至少存在一个外部输出(EO)和/或一个外部查询(EQ)；或EIF仅为EI的字段审核/校验存在(无EQ/EO)，仍可合规认定为EIF
+    fail_criteria: |
+      验证不通过：存在外部逻辑文件(EIF)无对应的外部输出(EO)且无外部查询(EQ)，且不属于EI字段审核/校验场景
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §8.2.4
+    example: |
+      系统A：HR系统能维护“员工信息”，推测出“员工信息”是ILF。
+      系统B：工资系统需要查员工信息来计算工资，工资系统只能查询，不能修改，推测出在工资系统中，“员工信息”是ELF。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Data-003
+    item_name: 技术性文件不计为逻辑文件检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      出于技术上的原因被引入的文件不宜被计数为逻辑文件
+    pass_criteria: |
+      验证通过：所有出于技术原因引入的文件(包括但不限于如工作文件、临时文件、中间文件、排序文件、打印文件等)均未计为逻辑文件
+    fail_criteria: |
+      验证不通过：存在出于技术原因引入的文件被错误计为逻辑文件(ILF或EIF)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §7.2.6
+    example: |
+      例如,工作文件、临时文件、中间文件、排序文件、打印文件、脱机文件，缓冲临时表，等等。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Data-004
+    item_name: 恢复校验文件不计入统计检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当用户请求重启恢复机制,可能需要一个校验文件,这个文件不被计数。此外,在确定功能复杂度时也不统计此类文件。
+    pass_criteria: |
+      验证通过：所有逻辑文件中未发现重启恢复机制所需的校验文件被计入统计
+    fail_criteria: |
+      验证不通过：存在重启恢复机制所需的校验文件被错误计入逻辑文件统计
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §7.2.7
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Data-005
+    item_name: 未变更逻辑文件不计入统计检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      在为一个增强项目进行功能点计数时,那些既有的、没有任何改变的应用程序的内部逻辑文件/外部逻辑文件不被计数。因此，如果该功能是本次优化/变更的，必须在功能描述中写出优化改造的内容，如某逻辑文件修改了某字段
+    pass_criteria: |
+      验证通过：增强项目中所有未做任何改变的已有逻辑文件(ILF/EIF)均未计入本次统计；若功能为优化/变更，功能描述中已写明优化改造内容
+    fail_criteria: |
+      验证不通过：增强项目中存在未做任何改变的已有逻辑文件被错误计入统计，或优化功能的功能描述中未写明具体优化改造内容
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §7.2.14
+      - GB-T42588-2023.md §8.2.13
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Data-006
+    item_name: 历史文件数据唯一性检查(ILF判定)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      只有当历史文件中的数据元素类型集合相对于其他文件是唯一的,历史文件才被计成一个内部逻辑文件。谨慎识别历史文件。用户通常需要它们,但是并不是总能及时对它们进行定义。
+    pass_criteria: |
+      验证通过：历史逻辑文件的数据元素类型(DET)集合相对于其他文件是唯一的，被正确计为独立的ILF
+    fail_criteria: |
+      验证不通过：历史逻辑文件的数据元素类型集合与其他文件重复(仅为副本/备份)，或其多出的字段为技术需要而非用户需要，但仍被计为独立ILF
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §7.2.9
+      - GB-T42588-2023.md §7.2.10
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Data-007
+    item_name: 逻辑文件实体独立性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      逻辑文件必须可以独立存在。实体独立性是指一个实体类型在没有其他实体类型存在的情况下,其本身依旧有意义
+      (1)实体在(1)∶(N)关系中独立
+      如果在两个实体类型(A 和 B)之间的关系是双向可选的,则说明两个实体类型可独立存在，实体类型 A 和 B 各自形成一个逻辑文件。
+      (2)实体在1∶N关系中依赖
+      如果在两个实体类型(A 和 B)之间的关系是双向强制的，则说明两者中的任一个实体类型都不能在没有对方的情况下存在,也就是说,它们不能彼此之间相互独立，实体类型 A 和 B 共同形成一个逻辑文件。
+      (3)实体在1∶(N)关系中依赖或者独立
+      如果在两个实体类型(A 和B)之间的关系是单向可选的，则意味着 A 可在没有连接到B的情况下独立存在(如项目和员工之间的1∶(N)的关系)。以下区分了两种本质上不同的情况:
+      1) 允许删除 A,同时删除连接到 A 的所有 B(可能会先给出一个需要确认的提示消息,声明在删除 A 时,所有的 B都会被自动删除);B除非被连接到 A,否则显然对业务没有意义,这种情况下认为 B是依赖于 A 的实体。
+      2) 只要仍有 B与 A 相连,就不允许删除 A。B是非常重要的。B是独立于 A 的实体。
+    pass_criteria: |
+      验证通过：相互依赖的逻辑文件已合并为一个逻辑文件识别(双向强制关系合并，双向可选关系各自独立，单向可选关系中依赖实体合并)
+    fail_criteria: |
+      验证不通过：存在相互依赖的逻辑文件被错误分拆识别(应合并而未合并)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.21.4
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Data-008
+    item_name: 多视图逻辑文件不重复计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      已被识别出的内部逻辑文件/外部逻辑文件可能存在多种不同的用户视图、访问路径和/或文件索引,这并不意味着要将该文件计为多个内部逻辑文件。
+    pass_criteria: |
+      验证通过：同一逻辑文件的不同用户视图、访问路径、文件索引均未导致重复计数
+    fail_criteria: |
+      验证不通过：存在同一逻辑文件因不同视图或访问路径被重复计数
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §7.2.8
+      - GB-T42588-2023.md §8.2.6
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Data-009
+    item_name: FPA数据表ILF判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果应用程序中的每个实体类型都可在应用程序中维护,那么应用程序中的常量、文本和解码等的实体类型被放在一组,作为应用程序的一个内部逻辑文件(FPA 数据表ILF)进行计数。此外,对于 FPA 数据表ILF来说,默认统计一个外部输入、一个外部输出和一个外部查询。如果上述列出的任何一种实体类型不能被应用程序进行维护,那么就不能被统计为 FPA 数据表ILF的一部分(见6.20)。
+    pass_criteria: |
+      验证通过：应用程序中可维护的常量、文本、解码等实体类型已合并为1个FPA数据表ILF，且默认统计1个EI、1个EO、1个EQ；不可维护的实体类型未纳入FPA数据表ILF
+    fail_criteria: |
+      验证不通过：可维护的常量/文本/解码等实体类型未合并或未正确计为FPA数据表ILF，或不可维护的实体类型被错误纳入
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §7.2.11
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Data-010
+    item_name: FPA数据表ELF(EIF)判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      被一个应用程序引用但由另一个应用程序维护的,诸如常量、文本和解码等实体类型被放在一起作为一个外部逻辑文件(FPA 数据表 ELF)。
+    pass_criteria: |
+      验证通过：被本应用程序引用但由其他应用程序维护的常量、文本、解码等实体类型，已合并为1个FPA数据表ELF(EIF)
+    fail_criteria: |
+      验证不通过：被外部维护本系统引用的常量/文本/解码等实体类型未合并或未正确计为FPA数据表ELF
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §8.2.7
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Data-011
+    item_name: 帮助文本FPA表判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      根据功能项描述和功能点计数项名称的内容，判断该功能是不是“帮助文本”，如果是，并且如果帮助文本可被维护,则将存储帮助文本的文件视为 FPA 表
+    pass_criteria: |
+      验证通过：正确识别帮助文本功能，可维护时将存储帮助文本的文件视为FPA表；不可维护时不计为FPA表
+    fail_criteria: |
+      验证不通过：帮助文本功能判定错误，或可维护时未视为FPA表，或不可维护时错误计为FPA表
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.13
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""

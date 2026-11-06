@@ -1,0 +1,415 @@
+version: "3.0.0"
+group: Orgs-ORG_A-Format
+org_id: ORG_A
+
+rules:
+  - id: Orgs-ORG_A-Format-112
+    item_name: 前评估阶段需求说明书提交完备性检查
+    layer: programmatic
+    document_types: [srs]
+    description: |
+      在前评估阶段，评审材料中，必须提交《需求说明书》
+    pass_criteria: |
+      验证通过：前评估阶段评审材料中已提交《需求说明书》
+    fail_criteria: |
+      验证不通过：前评估阶段评审材料中未提交《需求说明书》
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-113
+    item_name: 前后评估阶段NESMA拆分表提交完备性检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      在前后评估阶段，评审材料中，必须提交《NESMA拆分表》
+    pass_criteria: |
+      验证通过：前后评估阶段评审材料中均已提交《NESMA拆分表》
+    fail_criteria: |
+      验证不通过：前后评估阶段评审材料中未提交《NESMA拆分表》
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-114
+    item_name: 后评估阶段测试报告提交完备性检查
+    layer: programmatic
+    document_types: [test_report]
+    description: |
+      在后评估阶段，评审材料中，必须提交《测试报告》
+    pass_criteria: |
+      验证通过：后评估阶段评审材料中已提交《测试报告》
+    fail_criteria: |
+      验证不通过：后评估阶段评审材料中未提交《测试报告》
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-115
+    item_name: 前评估阶段需求评审表提交完备性检查
+    layer: programmatic
+    document_types: [demand_review_form]
+    description: |
+      在前评估阶段，必须提交《需求评审表》
+    pass_criteria: |
+      验证通过：前评估阶段已按要求提交《需求评审表》
+    fail_criteria: |
+      验证不通过：前评估阶段未按要求提交《需求评审表》
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-116
+    item_name: 前评估阶段汇报PPT提交完备性检查
+    layer: programmatic
+    document_types: [ppt]
+    description: |
+      在前评估阶段，必须提交《汇报PPT》
+    pass_criteria: |
+      验证通过：前评估阶段已按要求提交《汇报PPT》
+    fail_criteria: |
+      验证不通过：前评估阶段未按要求提交《汇报PPT》
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-117
+    item_name: 后评估阶段系统概详要设计说明书提交完备性检查
+    layer: programmatic
+    document_types: [spds]
+    description: |
+      在后评估阶段，必须提交《系统概详要设计说明书》
+    pass_criteria: |
+      验证通过：后评估阶段已按要求提交《系统概详要设计说明书》
+    fail_criteria: |
+      验证不通过：后评估阶段未按要求提交《系统概详要设计说明书》
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-118
+    item_name: 前评估阶段需求说明书模板合规性检查
+    layer: programmatic
+    document_types: [srs]
+    description: |
+      在前评估阶段，提交的《需求说明书》必须符合规定的模板，查找对应分支的对应项目类型的需求说明书模板，与之进行比对，目录结构和模板要保持一致。
+    pass_criteria: |
+      验证通过：前评估阶段提交的《需求说明书》目录结构与对应项目类型的模板保持一致
+    fail_criteria: |
+      验证不通过：前评估阶段提交的《需求说明书》目录结构与对应模板不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-119
+    item_name: 前后评估阶段NESMA拆分表模板合规性检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      在前后评估阶段，提交的《NESMA拆分表》必须符合规定的模板，查找对应分支的对应项目类型的NESMA拆分表模板，与之进行比对，表头结构保持一致。(前后评估的模板可能不一样)
+    pass_criteria: |
+      验证通过：前后评估阶段提交的《NESMA拆分表》表头结构与对应阶段的模板保持一致
+    fail_criteria: |
+      验证不通过：前后评估阶段提交的《NESMA拆分表》表头结构与对应模板不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-120
+    item_name: 后评估阶段测试报告模板合规性检查
+    layer: programmatic
+    document_types: [test_report]
+    description: |
+      在后评估阶段，提交的《测试报告》必须符合规定的模板，查找对应分支的对应项目类型的需求说明书模板，与之进行比对，目录结构保持一致。
+    pass_criteria: |
+      验证通过：后评估阶段提交的《测试报告》目录结构与对应项目类型的模板保持一致
+    fail_criteria: |
+      验证不通过：后评估阶段提交的《测试报告》目录结构与对应模板不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-121
+    item_name: 后评估阶段系统概详要设计说明书模板合规性检查
+    layer: programmatic
+    document_types: [spds]
+    description: |
+      在后评估阶段，提交的《系统概详要设计说明书》必须符合规定的模板，查找对应分支的对应项目类型的需求说明书模板，与之进行比对，目录结构保持一致。
+    pass_criteria: |
+      验证通过：后评估阶段提交的《系统概详要设计说明书》目录结构与对应项目类型的模板保持一致
+    fail_criteria: |
+      验证不通过：后评估阶段提交的《系统概详要设计说明书》目录结构与对应模板不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-122
+    item_name: 测试报告功能截图完整性与一致性检查
+    layer: semantic
+    document_types: [test_report]
+    description: |
+      测试报告中的每个【功能点】必须有对应截图，截图要求为：
+      1、概详设中这个功能用了几个表，测试报告对应该功能点就要截图几个表的数据库查询结果，呼应一致，
+      2、截图的字段数量要大于概详设，比如某个表，概详设写了4个字段，那截图出来的字段要大于4个，包住它
+      3、页面截图、数据库截图，功能描述，这三个要逻辑一致，要匹配。比如入库类的功能，要截图insert into类的后台日志，包括数据库可以查到这笔记录；导出类的功能，要把导出的文件打开截图
+      4、页面截图，别把整个窗口都截了，尽量少截点，能看出来符合就可以了，少暴漏
+    pass_criteria: |
+      验证通过：测试报告中每个功能点均有对应截图；截图页面内容与功能描述、需求说明一致；非界面功能截图已替换为对应代码或查询结果截图
+    fail_criteria: |
+      验证不通过：测试报告存在功能点无截图、截图内容与描述不一致，或非界面功能截图方式不符合要求
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-123
+    item_name: NESMA拆分表空值检查(GD版)
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的必填列不能为空
+    pass_criteria: |
+      验证通过：《NESMA拆分表》所有必填列均无空值
+    fail_criteria: |
+      验证不通过：《NESMA拆分表》存在必填列为空
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-124
+    item_name: NESMA拆分表类别取值检查(GD版)
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》中，【类型】列的取值必须是：ILF/ELF(EIF)/EI/EO/EQ(不区分大小写)之一
+    pass_criteria: |
+      验证通过：《NESMA拆分表》中【类别】列的取值均为ILF/ELF(EIF)/EI/EO/EQ之一(不区分大小写)
+    fail_criteria: |
+      验证不通过：《NESMA拆分表》中【类别】列存在不在规定范围内的取值
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-125
+    item_name: NESMA拆分表功能点计数项名称合规性检查(GD版)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【四级模块】列必须满足以下要求
+      1、不能出现标点符号，保证功能点计数项名称是一个短语而不是一段话。
+      2、要求描述语言直白，见名知意，长度 ≤50 字符
+      3、要和功能项描述的内容逻辑一致，说的是同一个功能。
+      4、必须说明该功能本期属性是【新增】、【更新】，【删除】
+    pass_criteria: |
+      验证通过：功能点计数项名称无标点符号、直白见名知意、长度≤50字符、与功能描述逻辑一致
+    fail_criteria: |
+      验证不通过：功能点计数项名称存在标点、不易懂、超长或逻辑不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-126
+    item_name: NESMA拆分表功能项描述合规性检查(GD版)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【功能描述】列必须满足以下要求：
+      1、避免直接复制功能项计数点名称的内容。
+      2、避免过于简单，缺少具体业务场景描述。
+      3、建议字数在20字以上。
+      4、描述要和功能点计数项名称的内容逻辑一致，不能功能点计数项名称是新增，功能项描述是导出。
+    pass_criteria: |
+      验证通过：功能项描述未直接复制名称、有具体业务场景、字数≥20字、与名称逻辑一致
+    fail_criteria: |
+      验证不通过：功能项描述直接复制名称、无业务场景、字数<20字或逻辑不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-127
+    item_name: NESMA拆分表功能点数量上限检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      NESMA功能清单拆分表的每个【三级功能】下面的四级功能建议不超过10个
+    pass_criteria: |
+      验证通过：每个【新需求名称】对应的功能点计数项数量不超过10个
+    fail_criteria: |
+      验证不通过：存在【新需求名称】对应的功能点计数项数量超过10个
+    severity: warning
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-128
+    item_name: NESMA拆分表同一功能重复拆分检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      NESMA功能清单拆分表的每个【二级功能】下面的三级功能同理不能太多(10个？)
+    pass_criteria: |
+      验证通过：同一功能未出现过多重复拆分(同类功能不超过10个)
+    fail_criteria: |
+      验证不通过：存在同一功能被重复拆分为过多类似功能点(超过10个)
+    severity: warning
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-129
+    item_name: NESMA拆分表一级模块数量上限检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      NESMA功能清单拆分表的【一级模块】不要拆解过多(10个？)，每个一级功能按百万级别的FPA工作量，类似子系统的颗粒度
+    pass_criteria: |
+      验证通过：一级模块数量适中(建议不超过10个)，每个一级功能按最小基本过程细分
+    fail_criteria: |
+      验证不通过：一级模块数量过多(超过10个)，可能存在模块划分不合理
+    severity: warning
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-130
+    item_name: 前评估阶段业务需求内容格式合规性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      在前后评估阶段，NESMA拆分表的【前后评估明细】sheet页，【输入输出(前后评估需要)】列的内容格式必须是：
+      表中文名称1{输入字段名称|输出字段名称}
+      表中文名称2{输入字段名称|输出字段名称}
+    pass_criteria: |
+      验证通过：NESMA拆分表【前评估业务需求】sheet中，业务需求内容格式为规范格式
+    fail_criteria: |
+      验证不通过：【前评估业务需求】中业务需求内容格式不符合规范要求
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-131
+    item_name: 后评估阶段业务流程内容合规性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      在后评估阶段，NESMA拆分表的【前后评估明细】sheet页的【处理过程】列的描述应把过程概述列出来步骤，让人一眼看懂是啥业务。建议列出1234....
+    pass_criteria: |
+      验证通过：【业务过程】列已将过程按步骤清晰列出(如1、2、3...)，可清晰了解业务操作流
+    fail_criteria: |
+      验证不通过：【业务过程】列未按步骤清晰列出过程，无法清晰了解业务操作流
+    severity: warning
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-132
+    item_name: 逻辑文件去重检查(文件模块列)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【四级模块】列取值必须唯一，并且不能高度相似(如相似度 > 80%就认为是高度相似内容需修改)
+    pass_criteria: |
+      验证通过：【文件模块】列取值唯一，且不存在高度相似(相似度≤80%)的条目
+    fail_criteria: |
+      验证不通过：【文件模块】列存在重复或高度相似(相似度>80%)的条目
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Format-133
+    item_name: 逻辑文件去重检查(功能项描述列)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【功能描述】列取值必须唯一，并且不能高度相似(如相似度 > 80%就认为是高度相似内容需修改)
+    pass_criteria: |
+      验证通过：【功能项描述】列取值唯一，且不存在高度相似(相似度≤80%)的条目
+    fail_criteria: |
+      验证不通过：【功能项描述】列存在重复或高度相似(相似度>80%)的条目
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""

@@ -1,0 +1,1081 @@
+version: "3.0.0"
+group: Base-All-Transaction
+
+
+rules:
+  - id: Base-All-Transaction-012
+    item_name: 基本过程识别规则检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      识别的功能必须是一个基本过程。
+      1、当满足以下两个条件时,一个功能被看作一个基本过程:
+      a) 功能对用户具有独立存在的意义,并且执行一个完整的信息处理过程。换句话说,功能是自包含的。
+      b)功能执行完毕后,应用程序处于稳定状态。
+      2、需要细分需求，不能将子系统、模块等过大的功能单元作为基本过程，需细分到增、删、修改、查询级别；
+      3、必须站在用户的业务视角而非技术视角，必须属于用户需求，超出用户需要的、镀金的需求不应计数；
+      4、不可过分拆分功能，一个完整的提交-处理过程不能分拆；
+      5、在之前或之后不需要任何的启动、验证、完成等操作，装载、格式检查、出错提示等均不属于基本过程；
+      6、操作有结果(成功/失败)、数据完整稳定，操作人员可转其他操作，掉电/重启不会丢失数据；
+      7、基本过程应包含从开始到结束所遇到的所有正常和异常情况，审核通过/不通过、录入数据的存在/不存在判断，均属于同一个基本过程，不能拆分；
+      8、多步骤录入数据若仅有一处提交，所有步骤服务于一个基本过程，计为一个外部输出，不能按步骤拆分计数
+      9、程序的步骤、出错、提示、校验、*检查……等不属于基本过程，基本过程有完整性要求，如：选择、校验、数据拼接，解析、清洗、操作日志、操作提醒等操作往往依赖于一个基本过程的分步骤，不能识别为独立的功能过程。
+      10、不能按照步骤拆分、数据分类拆分、输入和响应拆分、字段拆分
+    pass_criteria: |
+      验证通过：每个识别的功能均满足基本过程条件——对用户有独立存在意义、执行完整信息处理过程、执行完毕后应用处于稳定状态；功能已细分到增删改查级别，未将子系统/模块作为基本过程；站在用户业务视角识别，功能自包含且完整
+    fail_criteria: |
+      验证不通过：存在识别的功能不满足基本过程条件——功能过大(子系统/模块级别)、过分拆分(完整提交过程被拆分)、站在技术视角、缺少完整性(如将校验/提示/选择等步骤独立计数)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.1 定义外部输入
+      - GB-T42588-2023.md §9.2.1
+      - GB-T42588-2023.md §9.2.10
+      - GB-T42588-2023.md §10.1 定义外部输出
+      - GB-T42588-2023.md §10.2.1
+      - GB-T42588-2023.md §11.1 定义外部查询
+    example: |
+      例如,用户输入新员工信息时,包括该员工的薪资数据及其家庭状况信息的输入。从用户角度看,输入员工信息是一个完整的过程,输入薪资和家庭状况信息是此过程的一部分,并非分开进行。
+      例如,用户要求在输入员工姓名时应记录员工的薪资数据,仅输入员工的姓名或员工的薪资数据将导致应用程序处于不稳定状态。
+      示例：用户、角色管理需拆分为用户管理、角色管理，再进一步拆分为增删改查的最小单元
+      示例：工作流引擎的定义工作流程功能，若超出用户公文审核的需求，不应计算为基本过程
+      示例：修改员工信息的姓名、地址、联系方式，属于一个完整的员工修改功能，不能拆分为三个独立的基本过程
+      示例：项目活动工作量填报前的数据检测，属于填报功能的一部分，不能独立计数为基本过程
+      示例：Powerpoint插入图形的所有设置步骤，只有保存后才进入稳定状态，整体计为一个基本过程
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-013
+    item_name: 同一功能不重复计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      在一个应用程序中，一个功能只能被计数一次，无论是被一位或是多位用户使用，无论该功能出现在应用程序的一处或者是多处位置。这样确保一个特定的逻辑文件在一个应用程序中只会被计数一次：要么作为内部逻辑文件、要么作为外部逻辑文件，但不
+      能同时作为两者计数。
+    pass_criteria: |
+      验证通过：同一功能在应用程序中仅被计数一次，无论被多少用户使用或出现在多少处位置；同一逻辑文件仅作为ILF或EIF之一计数
+    fail_criteria: |
+      验证不通过：存在同一功能在应用程序中重复计数(如不同角色/权限/入口的相同功能被多次计数)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.3 不重复计算
+    example: |
+      例如：
+      (1)不同的角色执行相同的功能，例如：管理员登录和操作员登录；
+      (2)不同的权限执行相同的功能，例如：地市管理员查询资源报表，区县管理员查询资源报表；
+      (3)在不同的页面，有链接跳转到同一功能，例如：在资源管理页面点击板卡查看按钮可跳转到板卡信息页面查看板卡信息，在设备管理页面点击板卡查看按钮可跳转到板卡信息页面查看板卡信息。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-014
+    item_name: 多端功能重用程度计取规则检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当通过不同介质向相同的逻辑处理输入数据时，计为一个外部输入。
+    pass_criteria: |
+      验证通过：当通过不同介质向相同的逻辑处理输入数据时，计为一个外部输入。
+    fail_criteria: |
+      验证不通过：当通过不同介质向相同的逻辑处理输入数据时，计为多个外部输入。
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.21
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-015
+    item_name: 控制信息不计为单独功能检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      用于控制外部输入、输出或查询的输入数据 (如选择数据) 不算作单独的功能，而是算作所涉及功能的一部分。
+    pass_criteria: |
+      验证通过：用于控制EI/EO/EQ的选择数据(如筛选条件、排序要求)已作为所涉及功能的一部分，未计为单独功能
+    fail_criteria: |
+      验证不通过：存在控制信息(如选择数据、排序要求)被错误计为单独功能
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.19
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-016
+    item_name: 技术性功能不计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      由于技术原因 (如所使用的技术) 而专门引入但非用户要求的EI/EO/EQ，不计为外部输入。
+    pass_criteria: |
+      验证通过：所有因技术原因引入但非用户要求的EI/EO/EQ均未计为功能点
+    fail_criteria: |
+      验证不通过：存在因技术原因引入但非用户要求的EI/EO/EQ被错误计为功能点
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.11
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-017
+    item_name: 事务文件校验数据计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果在事务文件中出现带有校验数据的头记录和 / 或尾记录 (例如，总数或记录总数)，则这些记录的处理不会计为单独的外部输入/外部输出。但是，校验数据会被计为数据元素类型 (如果用户要求)。
+    pass_criteria: |
+      验证通过：事务文件中校验数据的头/尾记录未计为单独的EI/EO，但用户要求的校验数据已计为DET
+    fail_criteria: |
+      验证不通过：事务文件的校验头/尾记录被错误计为单独的EI/EO，或用户要求的校验数据未计为DET
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.23
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-018
+    item_name: EI类别与功能描述一致性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是EI的时候，功能必须符合EI定义。
+      EI的定义如下：
+      1、外部输入(EI)必须是被用户识别和认可的。
+      2、EI的处理过程包括：来自应用程序外部的数据和/或控制信息被输入到应用程序中，并且对一个或多个内部逻辑文件进行新增、更改或删除操作。
+      a)一定有来自应用程序外部(用户直接输入/其他程序)的数据和/或控制信息被输入到应用程序中,跨越应用程序的外部边界。
+      b)会对一个或多个内部逻辑文件进行新增、更改或删除操作
+    pass_criteria: |
+      验证通过：类别为EI的功能均符合EI定义——数据/控制信息从应用边界外输入，并对一个或多个ILF进行新增/更改/删除操作
+    fail_criteria: |
+      验证不通过：存在类别为EI的功能不符合EI定义——缺少外部数据输入或未对ILF进行维护操作
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.1 定义外部输入
+      - GB-T42588-2023.md §9.2.1
+      - GB-T42588-2023.md §9.2.12
+    example: ""
+    type_modify: 根据功能描述和功能名称判定该功能属于哪种类别，如果自主判定的类别取值低于原本类别取值，在计算功能点时，则以自主判定的为准；如果自主判定的类别取值高于原本取值，则保持原本类别取值不变。
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-019
+    item_name: EO类别与功能描述一致性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是EO的时候，功能必须符合EO的定义。
+      EO的定义如下：
+      1、外部输出(EO)必须是被用户识别和认可的。
+      2、外部输出既包括以报表和消息的形式直接提供给用户的输出产品,也包括通过在线链接或输出文件发送给其他应用程序的数据流。对于外部输出,仅输出产品的域是固定的,但是,输出产品的规模不一定是恒定的,这一点与外部查询中输出产品的规模是固定的不同。
+      3、数据规模大小不等,或者需要进一步的数据处理。
+      4、跨越应用程序边界
+    pass_criteria: |
+      验证通过：类别为EO的功能均符合EO定义——输出产品跨越应用边界、输出规模大小不等或需要进一步数据处理；功能点计数项名称满足唯一、无标点、直白易懂、长度≤50字符、逻辑一致的要求
+    fail_criteria: |
+      验证不通过：存在类别为EO的功能不符合EO定义，或功能点计数项名称存在重复、有标点、不易懂、长度>50字符或逻辑不一致的问题
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.1 定义外部输出
+      - GB-T42588-2023.md §10.2.1
+      - GB-T42588-2023.md §10.2.2
+    example: ""
+    type_modify: 根据功能描述和功能名称判定该功能属于哪种类别，如果自主判定的类别取值低于原本类别取值，在计算功能点时，则以自主判定的为准；如果自主判定的类别取值高于原本取值，则保持原本类别取值不变。
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-020
+    item_name: EO与EQ区分判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是EO时，解析功能描述，判定功能到底是EO还是EQ,禁止将EQ功能标记为EO。使用以下标准来区分外部输出(EO)和外部查询(EQ)：a) 外部输出的输出规模大小不等；b) 外部输出不需要输入即可选择数据；c) 外部输出的输出可能包含通过进一步数据处理 (如数据计算) 产生的数据。
+    pass_criteria: |
+      验证通过：正确区分EO与EQ——EO的输出规模大小不等、不需要输入即可选择数据、输出可能包含进一步数据处理产生的衍生数据；EQ功能未被错误标记为EO
+    fail_criteria: |
+      验证不通过：存在EQ功能被错误标记为EO，或EO/EQ的区分判定不符合五条准则要求
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.3
+    example: ""
+    type_modify: 根据功能描述和功能名称判定该功能属于哪种类别，如果自主判定的类别取值低于原本类别取值，在计算功能点时，则以自主判定的为准；如果自主判定的类别取值高于原本取值，则保持原本类别取值不变。
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-021
+    item_name: EQ类别与功能描述一致性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别选择EQ的时候，功能必须符合EQ的定义。
+      EQ的定义如下：
+      1、外部查询(EQ)必须是被用户识别和认可的。
+      2、独特的输入/输出组合
+      3、应用程序发布一个规模明确的、不需要进一步数据处理的输出,作为输入的结果。
+      4、外部查询输入部分的数据应能够唯一地标识所需的输出。
+      5、此外,输出的规模应完全明确。
+    pass_criteria: |
+      验证通过：类别为EQ的功能均符合EQ定义——独特的输入/输出组合、输出规模明确、不需要进一步数据处理；功能点计数项名称满足唯一、无标点、直白易懂、长度≤50字符、逻辑一致的要求
+    fail_criteria: |
+      验证不通过：存在类别为EQ的功能不符合EQ定义，或功能点计数项名称存在重复、有标点、不易懂、长度>50字符或逻辑不一致的问题
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §11.1 定义外部查询
+    example: |
+      示例：人事系统中依据身份证号查询个人基本信息并展示，属于一对一查询，无数据处理，计为EQ
+    type_modify: 根据功能描述和功能名称判定该功能属于哪种类别，如果自主判定的类别取值低于原本类别取值，在计算功能点时，则以自主判定的为准；如果自主判定的类别取值高于原本取值，则保持原本类别取值不变。
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-022
+    item_name: EQ五项条件满足检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当类别是EQ的时候，该功能必须满足以下条件：a) 外部查询输出的规模大小应明确；b) 外部查询的输入应包含一个唯一标识的查询参数；c) 外部查询的输出不应包含由进一步的数据处理而产生的数据；d) 执行外部查询时，不应维护内部逻辑文件。
+    pass_criteria: |
+      验证通过：类别为EQ的功能同时满足——输出规模大小明确、输入包含唯一标识的查询参数、输出不含进一步数据处理产生的衍生数据、执行时不维护ILF
+    fail_criteria: |
+      验证不通过：存在类别为EQ的功能不满足五项条件之一——输出规模不明确、输入无唯一标识查询参数、输出含衍生数据、执行时维护了ILF
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §11.2.9
+    example: ""
+    type_modify: 根据功能描述和功能名称判定该功能属于哪种类别，如果自主判定的类别取值低于原本类别取值，在计算功能点时，则以自主判定的为准；如果自主判定的类别取值高于原本取值，则保持原本类别取值不变。
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-023
+    item_name: EI独特性判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      下列情况中,外部输入宜被视为独特的:
+      a) 由一组不同于所有其他外部输入的数据元素类型组成;
+      b) 由一组相同的数据元素类型组成,但需要不同的逻辑处理方式。
+      逻辑处理方式是以用户指定的某种方法获取所需的结果。这意味着以下内容会涉及外部输入:
+      a) 维护并可能引用逻辑文件。例如,添加新订单时,引用逻辑文件“产品”以查看产品是否可被订购;
+      b) 执行算法、计算和验证。例如,添加新订单时,逻辑处理包括验证(含其他事项),以确定输入的数据是否正确。
+      下列情况中,逻辑处理方式会有所不同:
+      a) 维护或引用其他逻辑文件;
+      b) 维护相同的内部逻辑文件,但是有不同的算法,计算和(或)验证。
+    pass_criteria: |
+      验证通过：EI被正确判定为独特——DET集合不同或逻辑处理方式不同(维护/引用的逻辑文件不同，或算法/计算/验证不同)
+    fail_criteria: |
+      验证不通过：存在应判定为独特的EI被合并，或不应判定为独特的EI被分拆
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.1 定义外部输入
+      - GB-T42588-2023.md §9.2.1
+    example: 1、一个功能是“系统租户一键启用”，另一个功能是“系统租户一键禁用”，像这种成对的启用/停用功能应该算一个功能而不是两个功能
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-024
+    item_name: EI多ILF维护合并计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当外部输入维护多个内部逻辑文件(添加、更改或删除数据)时,如果用户将其视为一个整体,并且不会分别维护每个不同的文件,则将其计为单个外部输入。
+    pass_criteria: |
+      验证通过：当EI维护多个ILF且用户将其视为一个整体时，已正确计为单个EI，未按维护的ILF数量分拆
+    fail_criteria: |
+      验证不通过：存在维护多个ILF但被用户视为整体的EI被错误分拆计数
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.2
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-025
+    item_name: 确认操作与主功能合并计数检查(EI)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      在执行输入命令之前用于请求确认的外部输入 (例如，更改数据) 应计为一个外部输入，因为它属于一个基本过程。
+    pass_criteria: |
+      验证通过：执行输入命令前的确认操作(如确认/取消对话框)已作为同一基本过程的一部分，与主功能合并计为一个EI
+    fail_criteria: |
+      验证不通过：执行输入命令前的确认操作被错误计为独立的EI
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.8
+    example: |
+      例如：修改数据前弹出确认框(确认 / 取消)，这个确认操作和前面填字段、点修改按钮是同一个基本过程，整体归为一个外部输入。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-026
+    item_name: 分步执行功能的独立计数检查(EI)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      分两步执行新增、更改或删除数据时，计为两个功能 (例如，允许其他员工授权输入)。初始输入与授权功能分别计为一个外部输入。每个步骤都是一个基本过程。如果明确指定了外部查询，则可能会在此处显示。
+    pass_criteria: |
+      验证通过：分两步执行的新增/更改/删除(如初始输入+授权确认)已正确计为两个独立功能(每个步骤均为一个基本过程)
+    fail_criteria: |
+      验证不通过：分两步执行的新增/更改/删除被错误合并为一个功能，或不应分拆的被分拆
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.9
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-027
+    item_name: EI内数据显示不计为EQ检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果显示更改或删除的数据是作为更改或删除内部逻辑文件功能的一部分，则该数据显示将作为外部输入的一部分，不单独计为外部查询。检查类别是EQ的功能行，如果该EQ是EI(删除或者更改)的一部分，则不应该单独作为EQ,该EQ无效。
+    pass_criteria: |
+      验证通过：作为EI(更改/删除)一部分的数据显示未单独计为EQ；附属于EI的EQ功能行已被识别为无效
+    fail_criteria: |
+      验证不通过：存在属于EI一部分的数据显示被错误计为独立的EQ
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.14
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-028
+    item_name: 更改/删除界面自动显示数据不计为EQ检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      数据自动显示在更改屏幕或窗口时 ，此时不计为外部查询，而是作为外部输入的一部分。
+    pass_criteria: |
+      验证通过：更改屏幕或窗口中自动显示的数据已作为EI的一部分，未计为独立的EQ
+    fail_criteria: |
+      验证不通过：更改/删除界面自动显示的数据被错误计为独立的EQ
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.15
+    example: |
+      例如：连续显示输入文件中的数据时，此时不计为外部查询，而是作为外部输入的一部分
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-029
+    item_name: 独立EQ与可更改数据的功能计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果向用户提供了单独定义的外部查询功能，则对外部查询进行计数。如果查询到的数据可被更改功能进行更改，则需要统计成一个外部查询和一个外部输入。
+    pass_criteria: |
+      验证通过：单独定义的EQ已正确计数；查询到的数据可被更改时，已正确统计为一个EQ和一个EI
+    fail_criteria: |
+      验证不通过：单独定义的EQ未计数，或查询数据可更改时未统计对应的EI
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.16
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-030
+    item_name: 多屏幕EI合并计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果一个外部输入由多个输入屏幕或窗口组成 (因为并非所有需要的数据都可输入到一个屏幕上)，此时计为一个外部输入。但是，如果每个输入屏幕或窗口不必经过预先安排的顺序也可单独使用，则每个输入屏幕或窗口计为单独的外部输入，前提是每个屏幕或窗口本身都可视为一个基本过程。
+    pass_criteria: |
+      验证通过：由多个输入屏幕组成且不可单独使用的EI已合并计为一个；每个可单独使用的屏幕(各自为基本过程)已分别计数
+    fail_criteria: |
+      验证不通过：不可单独使用的多屏幕EI被分拆计数，或可单独使用的屏幕被错误合并
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.17
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-031
+    item_name: 输入处理时间延迟不影响计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      输入和处理数据之间的时间延迟不是成为识别额外的外部输入的理由。
+    pass_criteria: |
+      验证通过：输入和处理之间的时间延迟未导致额外的EI被识别
+    fail_criteria: |
+      验证不通过：存在因输入处理时间延迟而被错误识别为额外的EI
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.18
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-032
+    item_name: 事务文件多记录类型计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果已根据数据指定了不同种类的逻辑处理，则对另一个应用程序提供的事务文件 (含临时数据的文件) 的处理将导致多个外部输入。在其他情况下，当事务文件中定义了几种记录类型，或者在一种记录类型中定义了不同的处理代码时，就会发生这种情况。
+    pass_criteria: |
+      验证通过：来自其他应用程序的事务文件按不同逻辑处理方式正确计为多个EI(按记录类型或处理代码区分)
+    fail_criteria: |
+      验证不通过：事务文件中不同逻辑处理方式的记录被错误合并计数，或相同处理方式的被错误分拆
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.20
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-033
+    item_name: 同类外观不同维护对象EI分计检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      从外部看似乎相同但维护不同的内部逻辑文件的外部输入，应被计为单独的外部输入，因为它们需要不同的逻辑处理。
+    pass_criteria: |
+      验证通过：外观相同但维护不同ILF的EI已分别计为独立的EI(因逻辑处理方式不同)
+    fail_criteria: |
+      验证不通过：外观相同但维护不同ILF的EI被错误合并为一个
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.22
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-034
+    item_name: 先查后改功能独立计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      可通过非唯一的选择标准，选择需要更改或删除的数据。这意味着将显示满足输入条件的实体类型项目的特征数据，然后选择实体类型的所需项目(先查后改，查和改是独立的)。显示此数据的行为被视为附加功能，可计为一个外部输出 (见 6.16)。
+    pass_criteria: |
+      验证通过：通过非唯一选择标准先显示数据再选择更改/删除的场景，显示数据的行为已正确计为EO，更改/删除行为已正确计为EI
+    fail_criteria: |
+      验证不通过：先查后改场景中显示数据的行为未计为EO，或查和改被错误合并
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.2.24
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-035
+    item_name: EO独特性判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      下列情况中,外部输出应被视为独特的:
+      a) 输出产品的逻辑布局与所有其他输出产品不同;
+      b) 输出产品具有相同的逻辑布局,但是需要不同的逻辑处理方式;
+      c) 与所有其他外部输出的输入部分相比,外部输出的任何输入部分都包含一组不同的数据元素类型。
+      输出产品具有相同的逻辑布局,如果其数据元素类型集是相同的,则下列情况是允许的:
+      a) 以不同的顺序输出产品数据元素类型;
+      注:以不同方式(如,通过中间标题)对数据元素类型进行分组,视为不同的逻辑布局。
+      b) 输出产品中出现数据元素类型,却没有赋值,原因可能如下:
+      1) 数据元素类型在逻辑文件中没有值(因此,数据元素类型不可见);
+      2) 数据元素类型在逻辑文件中确实有值,但与用户无关。
+      外部输出的逻辑处理方式是以用户指定的某种方法获得所需的结果。以下内容会涉及外部输出。
+      a) 引用逻辑文件。例如,输出员工列表时,将引用逻辑文件“员工信息”。
+      b) 提供进一步的数据处理,如算法、计算和/或验证。
+      例如,当报告组织中的所有员工信息时,逻辑处理方式包含计算固定员工、小时工和所有员工总数所需的算法。
+      在以下情况,逻辑处理方式会有所不同:
+      a) 引用其他逻辑文件;
+      b) 引用了相同的逻辑文件,但存在其他算法、计算或验证。
+      使用不同的选择值进行选择(无论是否使用不同种类的通配符)和在同一字段上进行选择但使用不同的运算符,视为相同的逻辑处理方式。
+      为实现相同的逻辑处理而选择不同的技术解决方案,也不意味着逻辑处理方式是不同的。
+    pass_criteria: |
+      验证通过：EO被正确判定为独特——逻辑布局不同、或逻辑处理方式不同(引用不同逻辑文件或算法/计算/验证不同)、或输入部分DET集合不同；仅排序顺序不同或同一字段不同运算符视为相同处理方式
+    fail_criteria: |
+      验证不通过：存在应判定为独特的EO被合并，或不应判定为独特的EO被分拆
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.1 定义外部输出
+      - GB-T42588-2023.md §10.2.1
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-036
+    item_name: EO控制信息不计为EI检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      输入用于控制外部输出的数据 (例如，输入选择标准、排序要求或打印要求) 应被视为外部输出的一部分，不应计为外部输入。
+    pass_criteria: |
+      验证通过：用于控制EO的输入数据(如选择标准、排序要求、打印要求)已作为EO的一部分，未计为EI
+    fail_criteria: |
+      验证不通过：EO的控制信息(选择标准、排序要求等)被错误计为独立的EI
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.5
+    example: |
+      (例如，输入选择标准、排序要求或打印要求) 应被视为外部输出的一部分，不应计为外部输入。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-037
+    item_name: EO组合输出产品计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      一个输出产品可包含多个外部输出。如以下几种情况：a) 输出产品包含不同的逻辑布局，并且这些逻辑布局可被单独检索；b) 输出产品包含不同的逻辑布局，这些布局是通过不同的逻辑处理方式建立的，但为了便于使用而组合在一起。
+    pass_criteria: |
+      验证通过：包含多个EO的输出产品已按不同的逻辑布局或不同的逻辑处理方式正确分计
+    fail_criteria: |
+      验证不通过：包含多个不同逻辑布局/处理方式的EO的输出产品被错误合并为一个
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.7
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-038
+    item_name: 多排序方式报表EO合并计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      具有相同逻辑布局但可几种方式排序的报表能被计为一个外部输出，除非每个排序需要不同或额外的逻辑处理。
+    pass_criteria: |
+      验证通过：同一逻辑布局但多种排序方式的报表，仅当每种排序需不同/额外逻辑处理时才分计；否则合并计为一个EO
+    fail_criteria: |
+      验证不通过：同一逻辑布局的多排序报表，不需要不同逻辑处理时被错误分计
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.8
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-039
+    item_name: 多目标输出EO合并计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      输出可直接面向用户、其他应用程序或外部存储设备。如果逻辑布局和逻辑处理相同，则计为一个外部输出。
+    pass_criteria: |
+      验证通过：相同逻辑布局和逻辑处理的输出，无论面向用户/其他应用/外部存储，均已合并计为一个EO
+    fail_criteria: |
+      验证不通过：相同逻辑布局和逻辑处理的输出因目标不同被错误分计
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.9
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-040
+    item_name: 其他应用事务文件EO计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      有时需要将另一个应用程序的事务文件计为几个外部输出。
+    pass_criteria: |
+      验证通过：其他应用程序的事务文件已按不同记录类型或不同逻辑处理正确计为多个EO
+    fail_criteria: |
+      验证不通过：其他应用事务文件中不同逻辑处理的输出被错误合并
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.10
+    example: |
+      导出文件包含多种记录类型：
+      HDR|20260303|EXPORT001 ← 头记录
+      CUS|C10001|张三 ← 客户数据 → EO 1的一部分
+      CUS|C10002|李四 ← 客户数据 → EO 1的一部分
+      ORD|O001|C10001|¥599 ← 订单数据 → EO 2的一部分
+      ORD|O002|C10001|¥1,280 ← 订单数据 → EO 2的一部分
+      PRD|P001|商品A|100 ← 产品数据 → EO 3的一部分
+      PRD|P002|商品B|200 ← 产品数据 → EO 3的一部分
+      TRL|3 ← 尾记录
+      ✅ 这是3个EO合并到一个文件
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-041
+    item_name: 永久性数据应计为逻辑文件而非EO检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      由待计数的应用程序维护、被其他应用程序使用的、具有功能永久性数据的文件计为内部逻辑文件，而不是外部输出。其他使用该文件的应用程序将其作为外部逻辑文件计数，而不是外部输入。
+    pass_criteria: |
+      验证通过：由本应用维护且被其他应用使用的具有功能永久性数据的文件已计为ILF(而非EO)；其他使用该文件的应用已将其计为EIF(而非EI)
+    fail_criteria: |
+      验证不通过：本应用维护的永久性数据文件被错误计为EO而非ILF，或其他应用使用该文件时被错误计为EI而非EIF
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.12
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-042
+    item_name: 错误信息概述不计为EO检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果用户请求一个可能出现的错误信息的概述，则不计为单独的外部输出，因为带有错误信息的文件是 FPA 表。
+    pass_criteria: |
+      验证通过：用户请求的可能出现的错误信息概述未计为单独的EO(因该文件是FPA表)
+    fail_criteria: |
+      验证不通过：错误信息概述被错误计为单独的EO
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.13
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-043
+    item_name: 功能执行消息与主功能合并计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      描述某个功能执行情况的消息 (例如，错误信息) 与外部输入、输出或查询链接在一起，它们不被计为单个外部输出，而是合计为一个功能相关的数据元素类型。
+    pass_criteria: |
+      验证通过：描述功能执行情况的消息(如错误信息)已作为相关联功能的DET，未计为单独的EO
+    fail_criteria: |
+      验证不通过：功能执行消息被错误计为单独的EO而非DET
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.14
+    example: |
+      (例如，错误信息) 与外部输入、输出或查询链接在一起，它们不被计为单个外部输出，而是合计为一个功能相关的数据元素类型。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-044
+    item_name: 多功能消息输出产品计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      一个包含错误信息，或者涉及不同功能执行情况或相同功能被重复使用的消息的输出产品被统计为一个或者多个外部输出。
+    pass_criteria: |
+      验证通过：包含不同功能执行情况或相同功能被重复使用的消息的输出产品，已正确统计为一个或多个EO
+    fail_criteria: |
+      验证不通过：多功能消息的输出产品计数不正确
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.15
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-045
+    item_name: ILF维护逻辑结果输出计为EO检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      一个作为对内部逻辑文件维护的逻辑结果的输出产品 (例如，事务报告或处理报告) 被计为一个或多个外部输出。
+    pass_criteria: |
+      验证通过：作为ILF维护逻辑结果的输出产品(如事务报告、处理报告)已正确计为一个或多个EO
+    fail_criteria: |
+      验证不通过：ILF维护逻辑结果的输出产品未正确计数
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.16
+    example: |
+      (例如，事务报告或处理报告) 被计为一个或多个外部输出。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-046
+    item_name: 互斥选择EO分别计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      基于以下几个选择标准对输出进行计数：当用户有更多选项 (即 “和 / 或的情况”) 时，对互斥的选择进行计数。每个互斥的选择或选择组合分别计数。
+    pass_criteria: |
+      验证通过：用户有多个互斥选择时，每个互斥的选择或选择组合已分别计数
+    fail_criteria: |
+      验证不通过：互斥选择未分别计数，或被错误合并
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.17
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-047
+    item_name: 选择列表计为EO检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果用户明确要求显示一个可供用户选择的列表 (例如，选择屏幕、窗口、选择功能、选择列表或弹出功能)，则计为外部输出，前提是该数据源于逻辑文件而不是 FPA 表。显示列表不是外部查询，因为列表的大小是未知的。选择机会不算作单独的功能参与计数。
+    pass_criteria: |
+      验证通过：用户明确要求显示的可供选择列表(数据源于逻辑文件而非FPA表)已计为EO(非EQ，因列表大小未知)；选择机会未计为单独功能
+    fail_criteria: |
+      验证不通过：源于逻辑文件的选择列表被错误计为EQ，或被错误计为FPA表相关功能
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.20
+    example: |
+      (例如，选择屏幕、窗口、选择功能、选择列表或弹出功能)，则计为外部输出
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-048
+    item_name: 浏览/翻阅功能不额外计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      为支持浏览或翻阅所产生的输出，不计算任何额外的功能或数据元素类型。
+    pass_criteria: |
+      验证通过：为支持浏览或翻阅产生的输出，未计算额外的功能或DET
+    fail_criteria: |
+      验证不通过：浏览/翻阅功能被错误计算了额外的功能或DET
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.21
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-049
+    item_name: 多语言输出合并计数检查(EO)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果一个功能产生的输出产品的内容相同，但使用的语言不同，则该功能将计为一个外部输出。因为虽然输出产品在语言上有所不同，但它们由一组相同数据元素类型构成，并且逻辑处理过程也是相同的。
+    pass_criteria: |
+      验证通过：内容相同但语言不同的输出产品已合并计为一个EO(DET集合相同、逻辑处理相同)
+    fail_criteria: |
+      验证不通过：内容相同但语言不同的输出被错误分拆计数
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.22
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-050
+    item_name: 相同布局相同处理的EO合并计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果多个EO功能有多个输出产品，但a) 输出产品具有相同的逻辑布局；b) 输出产品是通过相同的逻辑处理方式产生的。那么只计算一个EO。
+    pass_criteria: |
+      验证通过：多个EO虽有多个输出产品，但逻辑布局相同且逻辑处理方式相同时，已合并计为一个EO
+    fail_criteria: |
+      验证不通过：逻辑布局和处理均相同的多个EO被错误分拆计数
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.23
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-051
+    item_name: EQ独特性判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      下列情况下外部查询应被视为独特的:
+      a) 外部查询的输入部分由一组不同于所有其他外部查询的输入部分的数据元素类型集组成;
+      b) 外部查询生成的输出产品与所有其他外部查询的输出部分所包含的数据元素类型集不同;
+      c) 输入部分和输出产品两者的数据元素类型集相同,但外部查询需要不同的逻辑处理方式。
+      外部查询的逻辑处理方式是以用户指定的某种方法获得所需的结果。以下内容将涉及外部查询:
+      a) 引用逻辑文件。例如:显示员工数据时,将引用逻辑文件“员工信息”;
+      b) 验证。例如:在查询员工信息时,应用程序会检查用户是否已被授权查询此信息。
+      以下情况,逻辑处理方式会有所不同:
+      a) 引用其他逻辑文件;
+      b) 引用了相同的逻辑文件,但是还有其他验证。
+    pass_criteria: |
+      验证通过：EQ被正确判定为独特——输入部分DET集不同、或输出部分DET集不同、或逻辑处理方式不同(引用不同逻辑文件或验证不同)
+    fail_criteria: |
+      验证不通过：存在应判定为独特的EQ被合并，或不应判定为独特的EQ被分拆
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §11.1 定义外部查询
+    example: 1、支持按小区地址**中文名称，全拼，首字母**模糊检索，匹配相似地址并返回信息，这算一个功能，不能按照**中文名称，全拼，首字母**拆为3个功能
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-052
+    item_name: EQ必须有明确发起方检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      外部查询可能存在于直接来自用户或其他应用程序的查询。检查类别是EQ的功能行，如果该EQ没有明确的用户(人/程序)发起查询命令，则不应该记为EQ。
+    pass_criteria: |
+      验证通过：类别为EQ的功能均有明确的用户(人/程序)发起查询命令
+    fail_criteria: |
+      验证不通过：存在类别为EQ的功能无明确的查询发起方，不应记为EQ
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §11.2.2
+      - GB-T42588-2023.md §11.2.5
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-053
+    item_name: EQ不维护ILF检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      外部查询的输入部分仅配合查询操作，而不会维护内部逻辑文件。如果该功能中出现了维护内部逻辑文件，则该功能不是EQ。
+    pass_criteria: |
+      验证通过：类别为EQ的功能的输入部分仅配合查询操作，未对任何ILF进行维护；若功能中出现了ILF维护，则该功能已正确判定为非EQ
+    fail_criteria: |
+      验证不通过：存在类别为EQ的功能中出现了ILF维护操作，但仍被标记为EQ
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §11.2.3
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-054
+    item_name: 查询工具与外部查询区分检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      请勿将查询工具与外部查询混淆。外部查询是对特定数据的直接查询操作，通常使用单键即可完成。另一方面，查询工具是由外部输入、输出和查询组成的组织结构，其目的是为了能够用多个键和操作组成若干查询。FPA 将这种组织结构视为一种应用程序，因此应单独计数。在这种情况下，只准许对外部输入、输出和查询进行计数。
+    pass_criteria: |
+      验证通过：查询工具(由EI/EO/EQ组成的组织结构)已作为应用程序单独计数，未与外部查询(特定数据的直接查询)混淆
+    fail_criteria: |
+      验证不通过：查询工具被错误计为单个EQ，或外部查询被错误计为查询工具
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §11.2.4
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Base-All-Transaction-055
+    item_name: EQ输入部分不计为EI检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      外部查询的输入部分不应计为外部输入。
+    pass_criteria: |
+      验证通过：EQ的输入部分均未计为独立的EI
+    fail_criteria: |
+      验证不通过：存在EQ的输入部分被错误计为独立的EI
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §11.2.6
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-056
+    item_name: EQ输出部分不计为EO检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      外部查询的输出部分不应计为外部输出。
+    pass_criteria: |
+      验证通过：EQ的输出部分均未计为独立的EO
+    fail_criteria: |
+      验证不通过：存在EQ的输出部分被错误计为独立的EO
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.2.4
+      - GB-T42588-2023.md §11.2.7
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-057
+    item_name: EQ浏览/滚动功能不额外计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      能够浏览或滚动生成输出的任何附加功能或数据元素类型不计算为EQ。
+    pass_criteria: |
+      验证通过：浏览或滚动生成输出的附加功能或DET均未计算为EQ
+    fail_criteria: |
+      验证不通过：浏览/滚动功能被错误计算了额外的EQ或DET
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §11.2.10
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-058
+    item_name: 帮助功能识别与计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      帮助功能通常将其识别为EQ。此外避免重复识别帮助功能。考虑以下情况:如果在每个屏幕或窗口都可调用的帮助信息,那么只能将其整体计数为应用程序的一个外部查询。总的来说,在被计数的应用程序中有多少种帮助功能,就最多有多少个外部查询。
+    pass_criteria: |
+      验证通过：帮助功能已正确识别为EQ；每个屏幕/窗口可调用的帮助信息已整体计为1个EQ；帮助功能无重复计数
+    fail_criteria: |
+      验证不通过：帮助功能未正确识别为EQ，或存在重复计数(如每个窗口的帮助均单独计数)
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.13
+    example: ""
+    type_modify: 如果该功能是帮助功能但类别取值不为EQ，则在计算功能点时，将类别的取值调整为EQ;
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果帮助功能重复计数，则重复的部分功能点取值为0。
+  - id: Base-All-Transaction-059
+    item_name: 信息安全授权登录功能计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      “信息安全功能、授权功能和登录功能”，这些通常是标准功能,原则上可用于所有应用程序,因此,它们通常不纳入功能点计数;如果它们应在当前计数的应用程序中构建,那么应纳入功能点计数。
+    pass_criteria: |
+      验证通过：信息安全、授权、登录等标准功能，若在当前应用内构建则已纳入计数，若为标准平台功能则未纳入计数
+    fail_criteria: |
+      验证不通过：信息安全类功能的纳入/排除判定错误
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.9
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-060
+    item_name: 系统消息计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      计算机系统消息是由操作系统或其他系统软件生成,这些消息不纳入功能点计数。
+      一个系统中，供多个事务功能调用或同一事务功能反复调用的功能消息(例如日志报告或错误报告)作为一个外部输出统一计数，不能再重复计数。
+    pass_criteria: |
+      验证通过：操作系统/系统软件生成的消息未纳入计数；供多个事务功能调用的功能消息(如日志报告/错误报告)已作为一个EO统一计数，无重复
+    fail_criteria: |
+      验证不通过：操作系统消息被错误纳入计数，或功能消息被重复计数
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.14
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-061
+    item_name: 菜单结构计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      菜单结构通常不纳入功能点计数。然而,对于每一个被识别的事务功能的启动,不论在菜单结构中需要多少实际的步骤数量,按一个数据元素类型进行计数。如果用户自己可维护菜单结构和文本,则根据计算逻辑文件和外部输入的准则进行计数。
+    pass_criteria: |
+      验证通过：菜单结构未纳入功能点计数；每个被识别事务功能的启动已按1个DET计数；用户可维护的菜单结构已按逻辑文件和EI准则计数
+    fail_criteria: |
+      验证不通过：菜单结构被错误纳入功能点计数，或事务功能启动DET计数不正确
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.15
+      - GB-T42588-2023.md §9.2.13
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Base-All-Transaction-062
+    item_name: 数据清理功能计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      系统定期或在线启动对**业务逻辑**数据的清除或归档才计为EI,对纯后台自动、技术运维、临时缓存、界面清空、数据库底层自动回收类清理一律不计 EI。一个清理过程，清理的数据可能包括多个逻辑文件，但只计为一个EI，而不是对每个内部逻辑文件都记一次EI
+    pass_criteria: |
+      验证通过：系统定期/在线启动的业务逻辑数据清除/归档已计为EI(一个清理过程计1个EI)；纯后台自动/技术运维/临时缓存/界面清空/数据库底层自动回收类清理均未计为EI
+    fail_criteria: |
+      验证不通过：业务数据清理未计为EI，或纯技术类清理被错误计为EI，或一个清理过程被按ILF数量分拆计数
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.18
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0

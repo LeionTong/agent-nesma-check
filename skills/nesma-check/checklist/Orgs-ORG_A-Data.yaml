@@ -1,0 +1,285 @@
+version: "3.0.0"
+group: Orgs-ORG_A-Data
+org_id: ORG_A
+
+rules:
+  - id: Orgs-ORG_A-Data-139
+    item_name: ILF中DET识别规则检查(使用/维护属性)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      只有那些在应用程序中被使用和/或维护的属性才会被确认为数据元素类型,因此并不是所有的属性都被计算在内。
+    pass_criteria: |
+      验证通过：仅在应用程序中被使用和/或维护的属性才被确认为DET，未被使用或维护的属性未计入
+    fail_criteria: |
+      验证不通过：存在未被应用程序使用或维护的属性被错误计为DET
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §7.3.1.1
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-140
+    item_name: EIF中DET识别规则检查(使用属性)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      只有那些在应用程序中被使用(或将被使用的)的属性才会被统计为数据元素类型,并不是所
+      有的属性都被统计在内。
+    pass_criteria: |
+      验证通过：仅在应用程序中被使用(或将使用)的属性才被统计为DET，未被使用的属性未计入
+    fail_criteria: |
+      验证不通过：存在未被应用程序使用的属性被错误统计为DET
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §8.3.1.1
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-141
+    item_name: EI的DET计数检查(错误/确认信息计入)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果可在输入屏幕或窗口上执行几个功能 (例如，新增、更改和删除), 则为每个功能计算其相关的数据元素类型数量。
+    pass_criteria: |
+      验证通过：输入屏幕/窗口中执行的错误信息、计算信息和确认信息已为每个功能计算了相关的DET
+    fail_criteria: |
+      验证不通过：EI的错误信息/确认信息相关的DET未被正确计入
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.3.1.3
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-142
+    item_name: 多屏幕EI的DET合并计数检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果将多个屏幕用于外部输入 (例如，第一个屏幕输入选择数据，第二个屏幕更改数据), 则在对数据元素类型进行计数时，应将这些屏幕的组合视为一个整体，因为该功能是一个基本过程。但是，如果选择数据不是唯一可识别的，则用户应首先从多个所选实体类型中选择所需的项目，然后对单独的外部输出进行计数 (见 9.2.24)。
+    pass_criteria: |
+      验证通过：多个输入屏幕/窗口组成的外部输入在计算DET时已作为一个整体处理
+    fail_criteria: |
+      验证不通过：多屏幕EI的DET被按屏幕分拆计算，而非作为整体处理
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.3.1.4
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-143
+    item_name: 输入屏幕显示额外数据计入DET检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      如果输入的响应显示了附加数据，那么其数据元素类型需计为外部输入的一部分。
+    pass_criteria: |
+      验证通过：输入屏幕显示的额外数据(如关联信息提示)已正确计为EI的DET
+    fail_criteria: |
+      验证不通过：输入屏幕显示的额外数据未被正确计为DET
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.3.1.6
+    example: |
+      例如，“更新客户信息” 功能，输入客户编号后，为了验证信息，应用程序首先显示客户的姓名和地址，之后用户可输入其余的数据。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-145
+    item_name: 排序/临时文件不计为FTR检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      事务文件 (输入或输出)和临时文件不能作为FTR.
+    pass_criteria: |
+      验证通过：排序文件(及类似文件)、临时文件均未计为FTR
+    fail_criteria: |
+      验证不通过：存在排序文件或临时文件被错误计为FTR
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.3.2.4
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-146
+    item_name: 技术性文件不计为FTR检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      由于技术原因而引入的文件 (如临时文件、排序文件和打印文件) 不计为FTR。
+    pass_criteria: |
+      验证通过：因技术原因引入的文件(如临时文件、排序文件、打印文件)均未计为FTR
+    fail_criteria: |
+      验证不通过：存在技术性文件被错误计为FTR
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.3.2.4
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-147
+    item_name: EO/EQ的FTR计数检查(数据处理文件计入)
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      当外部输出与外部输入绑定时，统计整个数据处理的引用逻辑文件的数量，而不仅仅是外部输出本身引用文件的数量。
+    pass_criteria: |
+      验证通过：EO/EQ处理数据所涉及的所有逻辑文件均已作为FTR计入
+    fail_criteria: |
+      验证不通过：EO/EQ处理涉及的逻辑文件未被完整计入FTR
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.3.2.1
+      - GB-T42588-2023.md §10.3.2.2
+    example: |
+      例如，多个事务处理报表的外部输出，此外部输出与用于处理事务的外部输入绑定在一起。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-148
+    item_name: 前评估字段业务标准检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      检查NESMA拆分表的【前后评估详细】sheet的J列【输入输出(前后评估需要)】，解析判断表名和表字段，表字段中不能有标准数据 (如系统日期和页码等)，如果违背该原则，那么该表名和字段存在问题，需要在评审结果报告中记录。
+    pass_criteria: |
+      验证通过：NESMA拆分表【前评估业务需求】sheet中业务需求字段均为业务字段，无纯技术标准字段(如系统编号/页面ID等)
+    fail_criteria: |
+      验证不通过：前评估业务需求字段中存在纯技术标准字段，违反业务原则
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.3.1.6
+      - GB-T42588-2023.md §11.3.1.6
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-149
+    item_name: 前评估字段固定数据检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      检查NESMA拆分表的【前后评估详细】sheet的J列【输入输出(前后评估需要)】，解析判断表名和表字段，表字段中不能有固定数据，如果违背该原则，那么该表名和字段存在问题，需要在评审结果报告中记录。
+    pass_criteria: |
+      验证通过：NESMA拆分表【前评估业务需求】sheet中业务需求字段均为动态业务数据，无固定数据字段(如固定文本标签/系统常量等)
+    fail_criteria: |
+      验证不通过：前评估业务需求字段中存在固定数据字段，违反DET计数原则
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.3.1.7
+      - GB-T42588-2023.md §11.3.1.7
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-150
+    item_name: 单个字段仅含一个业务信息检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      检查NESMA拆分表的【前后评估详细】sheet的J列【输入输出(前后评估需要)】，解析判断表名和表字段，一个功能中表字段只能有一个错误消息，不能有多个错误消息字段，如果违背该原则，那么该表名和字段存在问题，需要在评审结果报告中记录。
+    pass_criteria: |
+      验证通过：每个业务字段仅包含一个业务信息，无一个字段包含多个独立业务信息的情况
+    fail_criteria: |
+      验证不通过：前评估业务需求中存在一个字段包含多个独立业务信息，应拆分为多个字段
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §6.14
+      - GB-T42588-2023.md §9.3.1.5
+      - GB-T42588-2023.md §10.3.1.8
+      - GB-T42588-2023.md §11.3.1.8
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-151
+    item_name: 前评估字段无重复元素检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      检查NESMA拆分表的【前后评估详细】sheet的J列【输入输出(前后评估需要)】，解析判断表名和表字段，表字段中不能有导航元素，如果违背该原则，那么该表名和字段存在问题，需要在评审结果报告中记录。
+    pass_criteria: |
+      验证通过：业务需求字段无重复元素(同一信息不重复出现)
+    fail_criteria: |
+      验证不通过：前评估业务需求字段中存在重复元素
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §10.3.1.9
+      - GB-T42588-2023.md §11.3.1.9
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-152
+    item_name: FPA数据表关联字段处理检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      检查NESMA拆分表的【前后评估详细】sheet的J列【输入输出(前后评估需要)】，解析判断表名和表字段，如果表名和表字段代表的是FPA数据表，那么该表名和字段存在问题，需要在评审结果报告中记录。
+    pass_criteria: |
+      验证通过：业务需求字段涉及FPA数据表时已正确处理(关联字段已正确标记或排除)
+    fail_criteria: |
+      验证不通过：前评估业务需求中涉及FPA数据表的字段处理不正确
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.3.2.2
+      - GB-T42588-2023.md §10.3.2.3
+      - GB-T42588-2023.md §11.3.2.2
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Data-153
+    item_name: 同一逻辑文件关联字段处理检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      检查NESMA拆分表的【前后评估详细】sheet的J列【输入输出(前后评估需要)】，解析判断表名和表字段，如果表名和表字段代表的是一个技术文件，那么该表名和字段存在问题，需要在评审结果报告中记录。
+    pass_criteria: |
+      验证通过：业务需求字段涉及同一逻辑文件时已正确合并处理，未重复计数
+    fail_criteria: |
+      验证不通过：前评估业务需求中同一逻辑文件的字段被重复计数
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.3.2.5
+      - GB-T42588-2023.md §10.3.2.4
+      - GB-T42588-2023.md §11.3.2.3
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""

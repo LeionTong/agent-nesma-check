@@ -1,0 +1,24 @@
+version: "3.0.0"
+group: Orgs-ORG_A-Transaction
+org_id: ORG_A
+
+rules:
+  - id: Orgs-ORG_A-Transaction-144
+    item_name: EI至少包含一个FTR检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      EI至少有一个FTR
+    pass_criteria: |
+      验证通过：每个EI至少包含一个被引用的文件类型(FTR)
+    fail_criteria: |
+      验证不通过：存在EI未包含任何FTR
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - GB-T42588-2023.md §9.3.2.3
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""

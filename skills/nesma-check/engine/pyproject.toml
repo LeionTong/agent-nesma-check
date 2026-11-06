@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nesma-check-engine"
+version = "0.1.0"
+description = "NESMA 交付物检查代理 - 程序化检查脚本底座"
+license = { text = "MIT" }
+authors = [{ name = "Leion" }]
+requires-python = ">=3.10"
+dependencies = [
+    "openpyxl>=3.1.0",
+    "python-docx>=1.1.0",
+    "PyYAML>=6.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+pretty = ["rich>=13.0.0"]
+
+[project.scripts]
+nesma-check-engine = "nesma_check_engine.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nesma_check_engine*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

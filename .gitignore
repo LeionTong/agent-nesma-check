@@ -1,0 +1,49 @@
+# Claude Code / Cline / OpenCode / Serena 配置文件
+#.claude/
+#.opencode/
+#.serena/
+#.cline/
+#.clinerules/
+
+# IDE 和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Dependencies
+node_modules/
+.venv/
+.venv*
+
+# Environment 
+.env
+.env.local
+
+# Build outputs
+output/
+outputs/
+
+# 临时文件和缓存
+temp/
+temp-*/
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+
+# 测试文件
+test/
+tests/
+test-*/
+tests-*/
+!skills/nesma-check/engine/tests/
+__pycache__
+.pytest_cache/
+*.egg-info/
+.claude/worktrees/
+*.drawio.bkp
+
+# Agent 运行时产物
+.superpowers/

@@ -1,0 +1,140 @@
+version: "3.0.0"
+group: Orgs-ORG_A-Cross
+org_id: ORG_A
+
+rules:
+  - id: Orgs-ORG_A-Cross-134
+    item_name: NESMA拆分表与需求说明书层级对应检查(GD版)
+    layer: programmatic
+    document_types: [srs, function_breakdown]
+    description: |
+      NESMA拆分表的【一级模块】列必须和需求说明书的【X.X目录】对应，
+      NESMA拆分表的【二级模块】列必须和需求说明书的【X.X.X目录】对应,
+      NESMA拆分表的【三级模块】列必须和需求说明书的【X.X.X.X目录】对应,
+      NESMA拆分表的【四级模块】列必须和需求说明书的【X.X.X.X目录】对应。
+    pass_criteria: |
+      验证通过：NESMA拆分表一级/二级模块/功能点计数项名称与需求说明书对应目录层级一一对应
+    fail_criteria: |
+      验证不通过：NESMA拆分表各层级与需求说明书目录对应关系不匹配
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Cross-135
+    item_name: NESMA拆分表与测试报告层级对应检查(GD版)
+    layer: programmatic
+    document_types: [function_breakdown, test_report]
+    description: |
+      NESMA拆分表的【一级模块】列必须和测试报告的【X.X目录】对应，
+      NESMA拆分表的【二级模块】列必须和测试报告的【X.X.X目录】对应,
+      NESMA拆分表的【三级模块】列必须和测试报告的【X.X.X.X目录】对应,
+      NESMA拆分表的【四级模块】列必须和测试报告的【X.X.X.X目录】对应。
+    pass_criteria: |
+      验证通过：NESMA拆分表一级/二级模块/功能点计数项名称与测试报告对应目录层级一一对应
+    fail_criteria: |
+      验证不通过：NESMA拆分表各层级与测试报告目录对应关系不匹配
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Cross-136
+    item_name: NESMA拆分表与系统概详要设计说明书层级对应检查
+    layer: programmatic
+    document_types: [function_breakdown, spds]
+    description: |
+      NESMA拆分表的【一级模块】列必须和系统概详要设计说明书的【X.X目录】对应，
+      NESMA拆分表的【二级模块】列必须和系统概详要设计说明书的【X.X.X目录】对应,
+      NESMA拆分表的【三级模块】列必须和系统概详要设计说明书的【X.X.X.X目录】对应,
+      NESMA拆分表的【四级模块】列必须和系统概详要设计说明书的【X.X.X.X目录】对应。
+    pass_criteria: |
+      验证通过：NESMA拆分表一级/二级模块/功能点计数项名称与系统概详要设计说明书对应目录层级一一对应
+    fail_criteria: |
+      验证不通过：NESMA拆分表各层级与系统概详要设计说明书目录对应关系不匹配
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Cross-137
+    item_name: 需求说明书与汇报PPT架构图一致性检查
+    layer: programmatic
+    document_types: [srs, ppt]
+    description: |
+      汇报PPT中的架构图必须和需求说明书中的架构图一致
+    pass_criteria: |
+      验证通过：汇报PPT中的架构图与需求说明书中的架构图一致
+    fail_criteria: |
+      验证不通过：汇报PPT中的架构图与需求说明书中的架构图不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Cross-138
+    item_name: 需求说明书与系统概详要设计说明书需求文件一致性检查
+    layer: programmatic
+    document_types: [srs, spds]
+    description: |
+      系统概详要设计说明书的“数据文件”内容和需求说明书的数据文件”内容尽可能保持一致。 如果有偏差，按实际的写，但最好表数量和表字段数要大于等于需求规格说明书，不然后评估的FPA工作量就会低于前评估，那验收的时候，就会产生偏离度，要返工补充
+    pass_criteria: |
+      验证通过：系统概详要设计说明书中【需求文件】内容与需求说明书中需求文件内容保持一致；如有偏差，实际开发内容能在需求说明书中找到对应依据
+    fail_criteria: |
+      验证不通过：系统概详要设计说明书中的需求文件内容与需求说明书不一致，且无法在需求说明书中找到对应依据
+    severity: warning
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Cross-154
+    item_name: 功能拆分表中FPA数量，金额和汇报PPT中的数量，金额一致性检查
+    layer: programmatic
+    document_types: [function_breakdown, ppt]
+    description: |
+      前评估阶段汇报PPT中提及的FPA评估功能点个数和金额必须和功能拆分表的“FPA功能点预估数量”的总计，“预估金额”的总计一致
+    pass_criteria: |
+      功能点个数总计与功能拆分表中 “FPA 功能点预估数量” 的总计完全一致，且预估金额总计与功能拆分表中 “预估金额” 的总计完全一致
+    fail_criteria: |
+      功能点个数总计与功能拆分表中 “FPA 功能点预估数量” 的总计不一致，或预估金额总计与功能拆分表中 “预估金额” 的总计不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_A-Cross-155
+    item_name: 汇报PPT中研发内容和需求说明书的功能需求一致性检查
+    layer: programmatic
+    document_types: [srs, ppt]
+    description: |
+      前评估阶段汇报PPT中提及的本期研发内容必须和需求说明书中功能需求的内容一致
+    pass_criteria: |
+      前评估阶段汇报 PPT 中提及的本期研发内容，与需求说明书中功能需求的内容完全匹配，无遗漏、无偏差
+    fail_criteria: |
+      前评估阶段汇报 PPT 中提及的本期研发内容，与需求说明书中功能需求的内容存在遗漏、偏差或不匹配的情况
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""

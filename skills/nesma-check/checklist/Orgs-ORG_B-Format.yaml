@@ -1,0 +1,514 @@
+version: "3.0.0"
+group: Orgs-ORG_B-Format
+org_id: ORG_B
+
+rules:
+  - id: Orgs-ORG_B-Format-063
+    item_name: 需求说明书提交完备性检查
+    layer: programmatic
+    document_types: [srs]
+    description: |
+      评审材料中，必须提交《需求说明书》
+    pass_criteria: |
+      验证通过：评审材料中已提交《需求说明书》
+    fail_criteria: |
+      验证不通过：评审材料中未提交《需求说明书》
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id42
+      - ceprei-review-rules.md id1
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-064
+    item_name: NESMA拆分表提交完备性检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      评审材料中，必须提交《NESMA拆分表》
+    pass_criteria: |
+      验证通过：评审材料中已提交《NESMA拆分表》
+    fail_criteria: |
+      验证不通过：评审材料中未提交《NESMA拆分表》
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id42
+      - ceprei-review-rules.md id1
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-065
+    item_name: 测试报告提交完备性检查
+    layer: programmatic
+    document_types: [test_report]
+    description: |
+      评审材料中，必须提交《测试报告》
+    pass_criteria: |
+      验证通过：评审材料中已提交《测试报告》
+    fail_criteria: |
+      验证不通过：评审材料中未提交《测试报告》
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id42
+      - ceprei-review-rules.md id1
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-066
+    item_name: 技术规范书提交完备性检查
+    layer: programmatic
+    document_types: [technical_specification]
+    description: |
+      评审材料中，必须提交《技术规范书》
+    pass_criteria: |
+      验证通过：评审材料中已提交《技术规范书》
+    fail_criteria: |
+      验证不通过：评审材料中未提交《技术规范书》
+    severity: error
+    scope: [engineering]
+    references:
+      - cq-review-rules.md id42
+      - ceprei-review-rules.md id1
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-067
+    item_name: 需求说明书模板合规性检查
+    layer: programmatic
+    document_types: [srs]
+    description: |
+      提交的《需求说明书》必须符合规定的模板，查找对应分支的对应项目类型的需求说明书模板，与之进行比对，目录结构和模板要保持一致。
+    pass_criteria: |
+      验证通过：提交的《需求说明书》目录结构与对应项目类型的模板保持一致
+    fail_criteria: |
+      验证不通过：提交的《需求说明书》目录结构与对应模板不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-068
+    item_name: NESMA拆分表模板合规性检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      提交的《NESMA拆分表》必须符合规定的模板，查找对应分支的对应项目类型的NESMA拆分表模板，与之进行比对，表头结构保持一致。
+    pass_criteria: |
+      验证通过：提交的《NESMA拆分表》表头结构与对应项目类型的模板保持一致
+    fail_criteria: |
+      验证不通过：提交的《NESMA拆分表》表头结构与对应模板不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-069
+    item_name: 测试报告模板合规性检查
+    layer: programmatic
+    document_types: [test_report]
+    description: |
+      提交的《测试报告》必须符合规定的模板，查找对应分支的对应项目类型的需求说明书模板，与之进行比对，目录结构保持一致。
+    pass_criteria: |
+      验证通过：提交的《测试报告》目录结构与对应项目类型的模板保持一致
+    fail_criteria: |
+      验证不通过：提交的《测试报告》目录结构与对应模板不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-070
+    item_name: 技术规范书模板合规性检查
+    layer: programmatic
+    document_types: [technical_specification]
+    description: |
+      提交的《技术规范书》必须符合规定的模板，查找对应分支的对应项目类型的技术规范书模板，与之进行比对，表头结构保持一致。
+    pass_criteria: |
+      验证通过：提交的《技术规范书》目录结构与对应项目类型的模板保持一致
+    fail_criteria: |
+      验证不通过：提交的《技术规范书》目录结构与对应模板不一致
+    severity: error
+    scope: [engineering]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-076
+    item_name: 需求说明书系统架构图检查
+    layer: semantic
+    document_types: [srs]
+    description: |
+      《需求说明书》中必须提供系统功能架构图
+    pass_criteria: |
+      验证通过：《需求说明书》中已提供系统功能架构图
+    fail_criteria: |
+      验证不通过：《需求说明书》中未提供系统功能架构图
+    severity: error
+    scope: [engineering]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-077
+    item_name: 需求说明书功能截图检查
+    layer: semantic
+    document_types: [srs]
+    description: |
+      《需求说明书》中，要求每个功能点都有对应的截图，且截图要求是用户可操作的，非技术性的数据库表等，并且是该功能点相关的，能证明该功能存在的截图。
+    pass_criteria: |
+      验证通过：《需求说明书》中每个功能点均有对应的用户可操作截图，且截图能证明该功能存在
+    fail_criteria: |
+      验证不通过：《需求说明书》中存在功能点缺少截图，或截图不符合要求(技术性截图/与功能不相关)
+    severity: error
+    scope: [engineering]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果缺少截图，或者截图和功能不对应，则该功能行的功能点计数为0
+  - id: Orgs-ORG_B-Format-078
+    item_name: 测试报告功能截图检查
+    layer: semantic
+    document_types: [test_report]
+    description: |
+      《测试报告》中的每个功能点必须有对应截图，截图要求为：
+      1、尽量是界面用户可操作的截图；截图能证明这个功能是用户在使用。
+      2、如果是接口等后端功能，需要截取接口规范等截图；
+      3、尽量不要截取数据库表等底层实现的图。
+      4、截图必须和该功能逻辑一致，不要出现截图是别的功能的截图的情况
+    pass_criteria: |
+      验证通过：《测试报告》中每个功能点均有对应截图(界面功能截用户操作图，后端功能截接口规范图)，截图与功能逻辑一致
+    fail_criteria: |
+      验证不通过：《测试报告》中存在功能点缺少截图，或截图不符合要求(数据库底层图/截图与功能不匹配)
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果缺少截图，或者截图和功能不对应，则该功能行的功能点计数为0
+  - id: Orgs-ORG_B-Format-079
+    item_name: NESMA拆分表空值检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【US】列之前不能为空。注：考虑实际情况，三级模块/四级模块列可以为空。
+    pass_criteria: |
+      验证通过：《NESMA拆分表》中【US】列之前的所有必填列均无空值(三级/四级模块列可为空)
+    fail_criteria: |
+      验证不通过：《NESMA拆分表》的【US】列之前存在必填列为空的单元格
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果功能项描述或功能点计数项名称为空，则该功能行的功能点计数为0
+  - id: Orgs-ORG_B-Format-080
+    item_name: NESMA拆分表类别取值检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，【类别】列的值必须是：ILF/ELF(EIF)/EI/EO/EQ(不区分大小写)之一。注：部分客户可能要求EIF写成ELF,以客户为准。
+    pass_criteria: |
+      验证通过：【规模估算】sheet中【类别】列取值均为ILF/ELF(EIF)/EI/EO/EQ之一(不区分大小写)
+    fail_criteria: |
+      验证不通过：【规模估算】sheet中【类别】列存在不在ILF/ELF(EIF)/EI/EO/EQ范围内的取值
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Orgs-ORG_B-Format-081
+    item_name: NESMA拆分表重用程度取值检查(基础)
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，【重用程度】列的取值只能是【低/中/高】之一
+    pass_criteria: |
+      验证通过：【规模估算】sheet中【重用程度】列取值均为“低”/“中”/“高”之一
+    fail_criteria: |
+      验证不通过：【规模估算】sheet中【重用程度】列存在不在“低”/“中”/“高”范围内的取值
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Orgs-ORG_B-Format-082
+    item_name: NESMA拆分表修改/删除功能重用程度检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，当【修改类型】为【修改】/【删除】时，【重用程度】应该为【高】，除非变更或者新增的字段数量超过50%(一般不写中(默认规则)，认可度低)
+    pass_criteria: |
+      验证通过：【修改类型】为“修改”或“删除”时，【重用程度】为“高”(除非变更或新增字段数量超过50%可酌情为“中”)
+    fail_criteria: |
+      验证不通过：【修改类型】为“修改”或“删除”时，【重用程度】不为“高”且无充分理由
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id62
+    example: ""
+    type_modify: ""
+    reusability_modify: 【修改类型】为“修改”或“删除”时，重用程度计数为高
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-087
+    item_name: NESMA拆分表修改类型取值检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，【修改类型】列只能是【新增/修改/删除】之一
+    pass_criteria: |
+      验证通过：【规模估算】sheet中【修改类型】列取值均为“新增”/“修改”/“删除”之一
+    fail_criteria: |
+      验证不通过：【规模估算】sheet中【修改类型】列存在不在“新增”/“修改”/“删除”范围内的取值
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 如果验证不通过，功能点取值为0
+  - id: Orgs-ORG_B-Format-088
+    item_name: 修改类型=“删除”的判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      删除代表的含义是该功能已经在往期建设过，本次将该功能下线，误区：不要将原本功能中删除某条处理逻辑或者某个数据当做该功能送审类型为删除，
+    pass_criteria: |
+      验证通过：标记为“删除”的功能为往期已建设、本次下线的完整功能；未将功能内删除某条处理逻辑或数据误判为“删除”
+    fail_criteria: |
+      验证不通过：存在功能内仅删除处理逻辑/数据却被标记为“删除”，或往期未建设的功能被标记为“删除”
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id61
+    example: |
+      例如：将
+      原本告警统计功能中剔除例如：为了加强产品质量原因的真实性，将原来建设过的产品审核记录修改功能下
+      线，所以产品审核功能本次的送审类型应该为删除。
+      自然灾害类型的告警逻辑、将原本审核功能中的通过、驳回、待定三个按钮剔除待定按钮，那么告警统计功能、审核功能的
+      送审类型应该为修改而不是删除。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-089
+    item_name: 修改类型=“修改”的判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      修改代表的含义是该功能在往期已经建设过，本次进行增强开发，误区：不要将新增开发的修改功能当做送审类型为修改，
+    pass_criteria: |
+      验证通过：标记为“修改”的功能为往期已建设、本次增强开发的功能；新增开发的功能未被错误标记为“修改”；同一次开发中优化多个分步骤仅计为1次优化
+    fail_criteria: |
+      验证不通过：存在往期未建设的新增功能被标记为“修改”，或往期已建设的增强功能被标记为“新增”
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id60
+    example: |
+      例如：在以前的用户查询功能增加筛选项用户属于省份、地市、区县，以便提
+      高查询效率，用户查询功能在往期项目中已经建设过了，本次仅是增加筛选条件，用户查询功能的送审类型应该为修改。
+      例如：以前账号管理功能只具备账号新增、查询功能，不具备账号修改功能，本次新增开发账号修改功能，那么账号修改功能的送审类型为新增而不是修改；一个功能在同一次开发中优化多个不同的分步骤，只能计数为一次优化，例如：在原来的用户信息查询功能中，增加筛选条件省份、地市、区县、前端界面呈现增加用户户籍字段、增加按照年龄从大到小的排序逻辑，虽然改造了3个不同的点，但是根据基本过程完整性的原则来说，只能计取为1个EO；一个功能在不同批次开发中优化可分别计取，但是需提供相关材料证明是在多批次的开发中实现的。
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-090
+    item_name: 修改类型=“新增”的判定检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      新增代表的含义是该功能在往期没有建设过，本次新增开发，新增的逻辑、计算方式、属性等分步骤不能算作该功能处理的新增，
+    pass_criteria: |
+      验证通过：标记为“新增”的功能为往期未建设、本次新增开发的完整功能；新增的逻辑/计算方式/属性等分步骤未算作独立的新增功能
+    fail_criteria: |
+      验证不通过：存在往期已建设的功能被标记为“新增”，或仅增加处理步骤/字段/逻辑被错误计为独立的新增功能
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id59
+    example: |
+      例如：以前的
+      用户管理功能中只具备了增删改查功能，本次新增开发导出功能，那么导出功能的送审类型就应该为新增；以前登录功能中只具备账号密码登录功能，
+      本次新增开发SIM方式登录功能(账号密码登录和SIM登录属于2个独立的事务功能)，那么SIM方式登录功能的送审类型就应该为新增。误区：如果
+      以前的财务报表汇总功能中，没有统计员工的差旅费用，本次新增统计差旅费用数据，那么统计差旅费用只是财务报表汇总功能的其中一个分步骤，
+      座椅财务报表汇总功能的类型应该为修改；
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-091
+    item_name: NESMA拆分表修改类型与重用程度比例检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，如果该项目是一个涉及新增和修改的项目，列【修改类型】的新增/修改的比例要适中；【复用程度】列的低/中/高的比例要适中。
+    pass_criteria: |
+      验证通过：【修改类型】的新增/修改比例适中；【复用程度】的“低”/“中”/“高”比例适中，无异常失衡
+    fail_criteria: |
+      验证不通过：【修改类型】的新增/修改比例失衡，或【复用程度】的“低”/“中”/“高”比例失衡
+    severity: warning
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-092
+    item_name: 功能点计数项名称合规性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，【功能点计数项名称】列必须满足以下要求：
+      1、不能出现标点符号，保证功能点计数项名称是一个短语而不是一段话。
+      2、要求描述语言直白，见名知意，长度 ≤50 字符
+      3、要和功能项描述的内容逻辑一致，说的是同一个功能。
+    pass_criteria: |
+      验证通过：所有功能点计数项名称无标点符号、描述直白见名知意、长度≤50字符、与功能项描述内容逻辑一致
+    fail_criteria: |
+      验证不通过：存在功能点计数项名称包含标点符号、不易理解、长度>50字符、或与功能项描述逻辑不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-093
+    item_name: 功能点计数项名称唯一性检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，【功能点计数项名称】列取值必须唯一，并且不能高度相似(如相似度 > 80%就认为是高度相似内容需修改)
+    pass_criteria: |
+      验证通过：所有功能点计数项名称取值唯一，且不存在高度相似(相似度≤80%)的名称
+    fail_criteria: |
+      验证不通过：存在功能点计数项名称重复，或存在高度相似(相似度>80%)的名称
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 重复的功能点计数项名称的功能点计数为0
+  - id: Orgs-ORG_B-Format-094
+    item_name: 功能项描述合规性检查
+    layer: semantic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，【功能项描述】列必须满足以下要求：
+      1、避免直接复制功能项计数点名称的内容。
+      2、避免过于简单，缺少具体业务场景描述。
+      3、建议字数在20字以上。
+      4、描述要和功能点计数项名称的内容逻辑一致，不能功能点计数项名称是新增，功能项描述是导出。
+    pass_criteria: |
+      验证通过：所有功能项描述未直接复制功能点计数项名称、有具体业务场景描述、字数≥20字、与功能点计数项名称逻辑一致
+    fail_criteria: |
+      验证不通过：存在功能项描述直接复制名称、过于简单无业务场景、字数<20字、或与名称逻辑不一致
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-095
+    item_name: 功能项描述唯一性检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，【功能项描述】列取值必须唯一，并且不能高度相似(如相似度 > 80%就认为是高度相似内容需修改)
+    pass_criteria: |
+      验证通过：所有功能项描述取值唯一，且不存在高度相似(相似度≤80%)的描述
+    fail_criteria: |
+      验证不通过：存在功能项描述重复，或存在高度相似(相似度>80%)的描述
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: 重复的功能项描述的功能点计数为0
+  - id: Orgs-ORG_B-Format-096
+    item_name: 优化功能修改类型与重用程度取值检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      《NESMA拆分表》的【规模估算】sheet中，
+      如果功能点计数项名称和功能项描述表达的是对以往已存在的功能的升级/优化/重构/国产化，
+      那么【修改类型】只能选择【修改】，【复用程度】只能选择【高】；
+      若复用程度要选择【中】的话，必须描述清楚变更或者新增的字段数量超过50%。(一般不写中(默认规则)，认可度低)
+    pass_criteria: |
+      验证通过：功能为对已有功能的升级/优化/重构/国产化时，【修改类型】为“修改”，【重用程度】为“高”(若为“中”则已说明变更字段数量超50%)
+    fail_criteria: |
+      验证不通过：优化功能的【修改类型】不为“修改”或【重用程度】不为“高”且无充分理由
+    severity: error
+    scope: [engineering, new_demand]
+    references: []
+    example: |
+      示例：功能项描述列为，管理员点击同步按钮，将用户信息同步到外部人力资源系统(同步方式有FTP修改为SFTP)，功能点计数项名称列描述为，角色信息(原有字段基础上增加角色类型)
+    type_modify: ""
+    reusability_modify: 功能为对已有功能的升级/优化/重构/国产化时，【重用程度】为“高”
+    change_modify: 功能为对已有功能的升级/优化/重构/国产化时，【修改类型】为“修改”
+    function_point_count: ""
+  - id: Orgs-ORG_B-Format-097
+    item_name: NESMA拆分表开发费用金额检查
+    layer: programmatic
+    document_types: [function_breakdown]
+    description: |
+      NESMA拆分表的【开发费用附件】sheet的(C20的数值-C27优惠金额)要小于等于C22的订单金额。
+    pass_criteria: |
+      验证通过：NESMA拆分表【开发费用附件】sheet中，(C20数值 - C27优惠金额) ≤ C22订单金额
+    fail_criteria: |
+      验证不通过：NESMA拆分表【开发费用附件】sheet中，(C20数值 - C27优惠金额) > C22订单金额
+    severity: error
+    scope: [engineering, new_demand]
+    references:
+      - cq-review-rules.md id52
+    example: ""
+    type_modify: ""
+    reusability_modify: ""
+    change_modify: ""
+    function_point_count: ""
